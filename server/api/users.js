@@ -3,6 +3,7 @@ const {User} = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
+  console.log('server was hit');
   User.findAll({
     // explicitly select only the id and email fields - even though
     // users' passwords are encrypted, it won't help if we just
@@ -12,3 +13,4 @@ router.get('/', (req, res, next) => {
     .then(users => res.json(users))
     .catch(next)
 })
+
