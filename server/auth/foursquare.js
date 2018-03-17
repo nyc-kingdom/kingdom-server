@@ -1,7 +1,7 @@
 const passport = require('passport')
 const router = require('express').Router()
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
-const {User} = require('../db/models')
+const FoursquareStrategy = require('passport-foursquare').Strategy;
+const { User } = require('../db/models')
 module.exports = router
 
 /**
@@ -18,27 +18,27 @@ module.exports = router
  * process.env.GOOGLE_CALLBACK = '/your/google/callback'
  */
 
-if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
 
-  console.log('Google client ID / secret not found. Skipping Google OAuth.')
+  console.log('foursquare client ID / secret not found. Skipping foursquare OAuth.')
 
 } else {
 
-  const googleConfig = {
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK
+  const foursquareConfig = {
+    clientID: process.env.FOURSQUARE_ID,
+    clientSecret: process.env.FOURSQUARE_CLIENT_SECRET,
+    callbackURL: process.env.FOURSQUARE_CALLBACK
   }
 
-  const strategy = new GoogleStrategy(googleConfig, (token, refreshToken, profile, done) => {
-    const googleId = profile.id
+  const strategy = new FoursquareStrategy(foursquareConfig, (token, refreshToken, profile, done) => {
+    const foursquareId = profile.id
     const name = profile.displayName
     const email = profile.emails[0].value
 
-    User.find({where: {googleId}})
+    User.find({ where: { foursquareId } })
       .then(foundUser => (foundUser
         ? done(null, foundUser)
-        : User.create({name, email, googleId})
+        : User.create({ name, email, foursquareId })
           .then(createdUser => done(null, createdUser))
       ))
       .catch(done)
@@ -46,11 +46,10 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
   passport.use(strategy)
 
-  router.get('/', passport.authenticate('google', {scope: 'email'}))
+  router.get('/', passport.authenticate('foursquare', { scope: 'email' }))
 
-  router.get('/callback', passport.authenticate('google', {
-    successRedirect: '/home',
-    failureRedirect: '/login'
+  router.get('/callback', passport.authenticate('foursquare', {
+    successRedirect: 'http://localhost:3000',
+    failureRedirect: 'http://localhost:3000'
   }))
-
 }

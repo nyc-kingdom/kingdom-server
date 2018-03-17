@@ -4,7 +4,7 @@
 //   mode: isDev ? 'development' : 'production',
 //   entry: [
 //     '@babel/polyfill', // enables async-await
-//     './client/index.js'
+//     './server/index.js'
 //   ],
 //   output: {
 //     path: __dirname,
