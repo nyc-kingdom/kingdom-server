@@ -14,3 +14,13 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+router.get('/:id', async (req, res, next) => {
+  console.log('hit me');
+  try {
+  const user = await User.findById(+req.params.id, {include: [{ all: true, nested: true }]})
+  res.json(user);
+  } catch (error) {
+    next(error);
+  }
+})
+
