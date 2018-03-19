@@ -42,13 +42,13 @@ const createApp = () => {
   app.use(compression())
 
   // session middleware with passport
+  app.use(passport.initialize())
   app.use(session({
     secret: process.env.SESSION_SECRET || 'my best friend is Cody',
     store: sessionStore,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
   }))
-  app.use(passport.initialize())
   app.use(passport.session())
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

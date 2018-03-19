@@ -18,7 +18,7 @@ router.post('/', async (req, res, next) => {
       include: [{ all: true, nested: true }]
     })
     const establishmentId = establishment.id
-    await Checkin.create({ userId, establishmentId }, {
+    await Checkin.create({ userId: +userId, establishmentId }, {
       include: [{ all: true, nested: true }]
     })
     res.json(establishment);
