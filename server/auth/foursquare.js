@@ -38,10 +38,10 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
     User.find({ where: { foursquareId } })
       .then(foundUser => (foundUser
         ? done(null, foundUser)
-        : User.create({ name, email, foursquareId, isLoggedIn: true }, refreshToken)
+        : User.create({ name, email, foursquareId, token, isLoggedIn: true })
           .then(createdUser => {
-            console.log('this is the refresh:', refreshToken)
-            done(null, createdUser)})
+            console.log('this is the token:', token)
+            return done(null, createdUser)})
       ))
       .catch(done)
   })

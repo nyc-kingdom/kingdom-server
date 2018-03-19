@@ -27,8 +27,8 @@ const User = db.define('user', {
   foursquareId: {
     type: Sequelize.STRING
   },
-  refreshToken: {
-    type: Sequelize.TEXT
+  token: {
+    type: Sequelize.STRING
   },
   isLoggedIn: {
     type: Sequelize.BOOLEAN,
