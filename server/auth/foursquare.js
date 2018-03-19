@@ -38,8 +38,10 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
     User.find({ where: { foursquareId } })
       .then(foundUser => (foundUser
         ? done(null, foundUser)
-        : User.create({ name, email, foursquareId })
-          .then(createdUser => done(null, createdUser))
+        : User.create({ name, email, foursquareId, token, isLoggedIn: true })
+          .then(createdUser => {
+            console.log('this is the token:', token)
+            return done(null, createdUser)})
       ))
       .catch(done)
   })
@@ -49,7 +51,14 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
   router.get('/', passport.authenticate('foursquare', { scope: 'email' }))
 
   router.get('/callback', passport.authenticate('foursquare', {
-    successRedirect: 'http://localhost:3000',
-    failureRedirect: 'http://localhost:3000'
-  }))
+    //successRedirect: 'http://localhost:3000',
+    failureRedirect: '/api/users'
+  }), (req, res, next) => {
+    console.log('from four square: ', req.session);
+    req.session.save(() => res.redirect('http://localhost:3000')
+    )
+  })
 }
+
+//s%3AP6wKA7bg6EcUbHAj-FdZJFn2nNHvDpEc.f7fOazDEry0ZEWmwX9dXUGeKXdiAEktj4NAEEXvviwc
+//s%3A9n188jxIS14Ag5F9yrYAt9wdbyAkTemY.%2BGUA%2FWr2cHrH%2Fd64InPd8amij21snlZTMlOHBwlGxNg

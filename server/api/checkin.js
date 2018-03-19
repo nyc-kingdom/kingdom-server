@@ -3,12 +3,10 @@ const { Checkin } = require('../db/models');
 module.exports = router;
 
 router.get('/', (req, res, next) => {
-  console.log('hit');
   next();
 })
 
 router.get('/:userId', async (req, res, next) => {
-  console.log('hit it')
   try {
     const checkins = await Checkin.findAll({
       where: { userId: +req.params.userId },
@@ -23,7 +21,7 @@ router.get('/:userId', async (req, res, next) => {
 router.get('/:establishmentId', async (req, res, next) => {
   try {
     const checkins = await Checkin.findAll({
-      where: { establishmentId: req.params.establishmentId },
+      where: { establishmentId: +req.params.establishmentId },
       include: [{ all: true, nested: true }]
     });
     res.json(checkins);
@@ -35,7 +33,7 @@ router.get('/:establishmentId', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const { userId, establishmentId } = req.body;
-    const checkin = await Checkin.create({ userId: userId, establishmentId, lastCheckin: new Date() }, {
+    const checkin = await Checkin.create({ userId: +userId, establishmentId: +establishmentId, lastCheckin: new Date() }, {
       include: [{ all: true, nested: true }]
     })
     res.json(checkin);
@@ -46,7 +44,6 @@ router.post('/', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
   try {
-    //const { quantity } = req.body;
     const userId = +req.query.user;
     const establishmentId = +req.query.establishment;
     const checkin = await Checkin.findOne({
@@ -55,7 +52,6 @@ router.put('/', async (req, res, next) => {
     });
     const updated = await checkin.update({lastCheckin: new Date()});
     res.json(updated);
-    next()
   } catch (error) {
     next(error);
   }

@@ -11,9 +11,8 @@ const Checkin = db.define('checkin', {
   }
 })
 
-// Checkin.beforeUpdate(async (checkin) => {
-//   console.log(checkin.quantity);
-//   //await checkin.update({quantity: (this.quantity++)})
-// })
+Checkin.beforeUpdate(checkin => {
+  checkin.quantity = checkin.quantity += 1;
+})
   
 module.exports = Checkin;
