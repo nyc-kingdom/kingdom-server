@@ -23,7 +23,6 @@ router.get('/loggedIn', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-  next()
 })
 
 
