@@ -8,11 +8,17 @@ const Checkin = db.define('checkin', {
   },
   lastCheckin: {
     type: Sequelize.DATE,
-  }
-})
+  },
+}, {
+    scopes: {
+      populated: {
+        include: [{ all: true, nested: true }]
+      }
+    }
+  })
 
 Checkin.beforeUpdate(checkin => {
   checkin.quantity = checkin.quantity += 1;
 })
-  
+
 module.exports = Checkin;
