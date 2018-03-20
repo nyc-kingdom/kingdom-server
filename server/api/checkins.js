@@ -1,58 +1,43 @@
 const router = require('express').Router();
 const { Checkin } = require('../db/models');
+const asyncHandler = require('express-async-handler')
 module.exports = router;
 
-router.get('/', async (req, res, next) => {
-  try {
-    if (req.query.user) {
-      const checkins = await Checkin.findAll({
-        where: { userId: +req.query.user },
-        include: [{ all: true, nested: true }]
-      });
-      res.json(checkins);
-    }
-    if (req.query.establishment) {
-      const checkins = await Checkin.findAll({
-        where: { establishmentId: +req.query.establishment },
-        include: [{ all: true, nested: true }]
-      });
-      res.json(checkins);
-    }
-    else {
-      const checkins = await Checkin.findAll({
-        include: [{ all: true, nested: true }]
-      });
-      res.json(checkins);
-    }
-  } catch (error) {
-    next(error);
+router.get('/', asyncHandler(async (req, res, next) => {
+  if (req.query.user) {
+    const checkins = await Checkin.scope('populated').findAll({
+      where: { userId: +req.query.user },
+    });
+    res.json(checkins);
   }
-})
+  if (req.query.establishment) {
+    const checkins = await Checkin.findAll({
+      where: { establishmentId: +req.query.establishment }
+    });
+    res.json(checkins);
+  }
+  else {
+    const checkins = await Checkin.findAll({
+    });
+    res.json(checkins);
+  }
+}))
 
-router.post('/', async (req, res, next) => {
-  try {
+router.post('/', asyncHandler(async (req, res, next) => {
     const { userId, establishmentId } = req.body;
-    const checkin = await Checkin.create({ userId: +userId, establishmentId: +establishmentId, lastCheckin: new Date() }, {
-      include: [{ all: true, nested: true }]
+    const checkin = await Checkin.scope('populated').create({
+      userId: +userId, establishmentId: +establishmentId, lastCheckin: new Date()
     })
     res.json(checkin);
-  } catch (error) {
-    next(error);
   }
-})
+))
 
-router.put('/', async (req, res, next) => {
-  try {
+router.put('/', asyncHandler(async (req, res, next) => {
     const userId = +req.query.user;
     const establishmentId = +req.query.establishment;
-    const checkin = await Checkin.findOne({
+    const checkin = await Checkin.scope('populated').findOne({
       where: { userId: userId, establishmentId: establishmentId },
-      include: [{ all: true, nested: true }]
     });
     const updated = await checkin.update({ lastCheckin: new Date() });
     res.json(updated);
-  } catch (error) {
-    next(error);
-  }
-})
-
+}))
