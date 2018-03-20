@@ -14,7 +14,13 @@ const Establishment = db.define('establishment', {
   },
   longitude: {
     type: Sequelize.INTEGER,
-  },
-})
+  }
+}, {
+    scopes: {
+      populated: {
+        include: [{ all: true, nested: true }]
+      }
+    }
+  })
 
 module.exports = Establishment;
