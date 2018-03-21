@@ -1,16 +1,23 @@
-const User = require('./user');
-const Establishment = require('./establishment');
-const Checkin = require('./checkin');
-const Kingdom = require('./kingdom');
+const User = require('./user')
+const Establishment = require('./establishment')
+const Checkin = require('./checkin')
+const Kingdom = require('./kingdom')
+const Resource = require('./resource')
+const UserResource = require('./userResource')
 
-User.belongsToMany(Establishment, {through: Checkin});
-Establishment.belongsToMany(User, {through: Checkin});
+//Many to Many
+User.belongsToMany(Establishment, {through: Checkin})
+Establishment.belongsToMany(User, {through: Checkin})
 
-User.belongsTo(Kingdom);
-Kingdom.hasMany(User);
+User.belongsToMany(Resource, {through: UserResource})
+Resource.belongsToMany(User, {through: UserResource})
 
-Establishment.belongsTo(Kingdom);
-Kingdom.hasMany(Establishment);
+//One to Many
+User.belongsTo(Kingdom)
+Kingdom.hasMany(User)
+
+Establishment.belongsTo(Kingdom)
+Kingdom.hasMany(Establishment)
 
 module.exports = {
   User,

@@ -1,3 +1,5 @@
+//import { Promise } from '../../../../../Library/Caches/typescript/2.6/node_modules/@types/bluebird';
+
 /**
  * Welcome to the seed file! This seed file uses a newer language feature called...
  *
@@ -10,7 +12,7 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const { User, Kingdom, Establishment, Resource, Checkin} = require('../server/db/models')
 
 async function seed () {
   await db.sync({force: true})
@@ -18,12 +20,44 @@ async function seed () {
   // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
+  await Promise.all([
+    Kingdom.create({name: 'Lefferts Gardens'}),
+    Kingdom.create({name: 'Financial District'}),
+    Kingdom.create({name: 'Bushwick'}),
+    Kingdom.create({name: 'Astoria'})
   ])
-  // Wowzers! We can even `await` on the right-hand side of the assignment operator
-  // and store the result that the promise resolves to in a variable! This is nice!
+
+  const users = await Promise.all([
+    User.create({email: 'dongwoo@email.com', kingdomId: 2}),
+    User.create({email: 'connor@gmail.com', kingdomId: 3}),
+    User.create({email: 'bruce@gmail.com', kingdomId: 4}),
+    User.create({email: 'phil@email.com', kingdomId: 1}),
+  ])
+
+  await Promise.all([
+    Establishment.create({name: 'Analogue', kingdomId: 1}),
+    Establishment.create({name: 'Starbucks', kingdomId: 1}),
+    Establishment.create({name: 'Killarneys', kingdomId: 2}),
+    Establishment.create({name: 'Fullstack', kingdomId: 2}),
+    Establishment.create({name: 'Little Mo', kingdomId: 3}),
+    Establishment.create({name: 'Baby Skips', kingdomId: 3}),
+    Establishment.create({name: 'Astoria Beer Garden', kingdomId: 4}),
+    Establishment.create({name: 'PS1', kingdomId: 4})
+  ])
+
+  await Promise.all([
+    Checkin.create({quantity: 1, userId: 1, establishmentId: 3}),
+    Checkin.create({quantity: 2, userId: 1, establishmentId: 4}),
+    Checkin.create({quantity: 1, userId: 2, establishmentId: 5}),
+    Checkin.create({quantity: 2, userId: 2, establishmentId: 6}),
+    Checkin.create({quantity: 5, userId: 2, establishmentId: 4}),
+    Checkin.create({quantity: 2, userId: 3, establishmentId: 7}),
+    Checkin.create({quantity: 5, userId: 3, establishmentId: 8}),
+    Checkin.create({quantity: 2, userId: 4, establishmentId: 1}),
+    Checkin.create({quantity: 3, userId: 4, establishmentId: 2}),
+    
+  ])
+
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 }

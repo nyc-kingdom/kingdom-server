@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../db/models/user')
+const passport = require('passport')
 module.exports = router
 
 // router.post('/login', (req, res, next) => {
@@ -36,8 +37,14 @@ module.exports = router
 //   res.redirect('/')
 // })
 
+passport.serializeUser((user, done) => done(null, user.id))
+passport.deserializeUser((id, done) =>
+  User.findById(id)
+    .then(user => done(null, user))
+    .catch(done))
+
+
 router.get('/me', (req, res) => {
-  console.log('after page rerenders', req.user);
   res.json(req.user)
 })
 
