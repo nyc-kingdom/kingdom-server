@@ -34,6 +34,12 @@ const User = db.define('user', {
     type: Sequelize.BOOLEAN,
     defaultValue: false
   }
+}, {
+  scopes: {
+    populated: {
+      include: [{ all: true}]
+    }
+  }
 })
 
 module.exports = User
