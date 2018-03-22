@@ -34,7 +34,6 @@ module.exports = User
 function calcExperience(establishments) {
   return establishments.reduce((experience, establishment) => {
     experience += establishment.checkin.quantity
-    console.log('this is experience', experience)
     return experience
   }, 0)
 }
@@ -46,9 +45,9 @@ User.beforeUpdate(user => {
   user.increment('experience')
 })
 
-User.afterCreate(user => {
-  console.log(user.establishments)
-  if (user.establishments && user.establishments.length) {
-    user.experience = calcExperience(user.establishments)
-  }
-})
+// User.afterCreate(user => {
+//   console.log(user.establishments)
+//   if (user.establishments && user.establishments.length) {
+//     user.experience = calcExperience(user.establishments)
+//   }
+// })
