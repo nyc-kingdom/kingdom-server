@@ -12,7 +12,7 @@ const Checkin = db.define('checkin', {
     type: Sequelize.DATE,
   },
   fourSquareIds: {
-    type: Sequelize.ARRAY
+    type: Sequelize.ARRAY(Sequelize.STRING)
   }
 }, {
     scopes: {

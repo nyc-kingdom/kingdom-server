@@ -1,48 +1,50 @@
-//import { Promise } from '../../../../../Library/Caches/typescript/2.6/node_modules/@types/bluebird';
-
-/**
- * Welcome to the seed file! This seed file uses a newer language feature called...
- *
- *                  -=-= ASYNC...AWAIT -=-=
- *
- * Async-await is a joy to use! Read more about it in the MDN docs:
- *
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
- *
- * Now that you've got the main idea, check it out in practice below!
- */
 const db = require('../server/db')
-const { User, Kingdom, Establishment, Resource, Checkin} = require('../server/db/models')
+const { User,
+  Kingdom,
+  Establishment,
+  Resource,
+  Checkin,
+  Castle } = require('../server/db/models')
 
-async function seed () {
-  await db.sync({force: true})
+async function seed() {
+  await db.sync({ force: true })
   console.log('db synced!')
-  // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
-  // executed until that promise resolves!
 
   await Promise.all([
-    Kingdom.create({name: 'Lefferts Gardens'}),
-    Kingdom.create({name: 'Financial District'}),
-    Kingdom.create({name: 'Bushwick'}),
-    Kingdom.create({name: 'Astoria'})
+    Kingdom.create({ name: 'Lefferts Gardens' }),
+    Kingdom.create({ name: 'Financial District' }),
+    Kingdom.create({ name: 'Bushwick' }),
+    Kingdom.create({ name: 'Astoria' })
   ])
 
   const users = await Promise.all([
-    User.create({email: 'dongwoo@email.com', kingdomId: 2}),
-    User.create({email: 'connor@gmail.com', kingdomId: 3}),
-    User.create({email: 'bruce@gmail.com', kingdomId: 4}),
-    User.create({email: 'phil@email.com', kingdomId: 1}),
+    User.scope('populated').create({ email: 'dongwoo@email.com', kingdomId: 2 }),
+    User.scope('populated').create({ email: 'connor@gmail.com', kingdomId: 3 }),
+    User.scope('populated').create({ email: 'bruce@gmail.com', kingdomId: 4 }),
+    User.scope('populated').create({ email: 'phil@email.com', kingdomId: 1 }),
   ])
 
   await Promise.all([
-    Establishment.create({name: 'Analogue', kingdomId: 1}),
-    Establishment.create({name: 'Starbucks', kingdomId: 1}),
-    Establishment.create({name: 'Killarneys', kingdomId: 2}),
-    Establishment.create({name: 'Fullstack', kingdomId: 2}),
-    Establishment.create({name: 'Little Mo', kingdomId: 3}),
-    Establishment.create({name: 'Baby Skips', kingdomId: 3}),
-    Establishment.create({name: 'Astoria Beer Garden', kingdomId: 4}),
-    Establishment.create({name: 'PS1', kingdomId: 4})
+    Establishment.create({ name: 'Analogue', latitude: 40.669605, longitude: -73.995514, fourSquareId: '1', kingdom: 'Lefferts Gardens' }),
+    Establishment.create({ name: 'Starbucks', latitude: 40.673823, longitude: -73.999095, fourSquareId: '2', kingdom: 'Lefferts Gardens' }),
+    Establishment.create({ name: 'Killarneys', latitude: 40.673938, longitude: -74.109050, fourSquareId: '3', kingdom: 'Financial District'  }),
+    Establishment.create({ name: 'Fullstack', latitude: 40.705076, longitude: -74.009160, fourSquareId: '4', kingdom: 'Financial District'}),
+    Establishment.create({ name: 'Little Mo', latitude: 40.696494, longitude: -73.929491, fourSquareId: '5', kingdom: 'Bushwick' }),
+    Establishment.create({ name: 'Baby Skips', latitude: 40.702962, longitude: -73.930221, fourSquareId: '6', kingdom: 'Bushwick'  }),
+    Establishment.create({ name: 'Astoria Beer Garden', latitude: 40.769801, longitude: -73.922956, fourSquareId: '7', kingdom: 'Astoria' }),
+    Establishment.create({ name: 'PS1', latitude: 40.745595, longitude: -73.947095, fourSquareId: '8', kingdom: 'Astoria' })
+  ])
+
+  await Promise.all([
+    Checkin.create({ quantity: 1, userId: 1, establishmentId: 3 }),
+    Checkin.create({ quantity: 5, userId: 1, establishmentId: 4 }),
+    Checkin.create({ quantity: 1, userId: 2, establishmentId: 5 }),
+    Checkin.create({ quantity: 2, userId: 2, establishmentId: 6 }),
+    Checkin.create({ quantity: 1, userId: 2, establishmentId: 4 }),
+    Checkin.create({ quantity: 2, userId: 3, establishmentId: 7 }),
+    Checkin.create({ quantity: 5, userId: 3, establishmentId: 8 }),
+    Checkin.create({ quantity: 2, userId: 4, establishmentId: 1 }),
+    Checkin.create({ quantity: 3, userId: 4, establishmentId: 2 }),
   ])
 
   await Promise.all([

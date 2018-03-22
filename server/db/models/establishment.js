@@ -7,24 +7,29 @@ const Establishment = db.define('establishment', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  address: {
-    type: Sequelize.STRING,
+  fourSquareId: {
+    type: Sequelize.STRING
   },
   latitude: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DECIMAL
   },
   longitude: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DECIMAL
+  }, kingdom: {
+    type: Sequelize.STRING
   }
 }, {
     scopes: {
       populated: {
-        include: [{ all: true}]
+        include: [{ all: true }]
       }
     },
     getterMethods: {
       keeper() {
         if (this.users && this.users.length) return mostCheckins(this.users).id
+      },
+      kingdom() {
+
       }
     }
   })
@@ -36,5 +41,6 @@ function mostCheckins(users) {
     return greatest
   }, {})
 }
+
 
 module.exports = Establishment;

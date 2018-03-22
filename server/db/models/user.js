@@ -27,13 +27,6 @@ const User = db.define('user', {
       include: [{ all: true}]
     }
   },
-  // getterMethods: {
-  //   experience() {
-  //     if (this.establishments && this.establishments.length) {
-  //       return calcExperience(this.establishments)
-  //     }
-  //   }
-  //}
 })
 
 module.exports = User
@@ -51,3 +44,10 @@ User.beforeUpdate(user => {
   }
   user.increment('experience')
 })
+
+// User.afterCreate(user => {
+//   console.log(user.establishments)
+//   if (user.establishments && user.establishments.length) {
+//     user.experience = calcExperience(user.establishments)
+//   }
+// })
