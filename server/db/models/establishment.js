@@ -25,6 +25,9 @@ const Establishment = db.define('establishment', {
     getterMethods: {
       keeper() {
         if (this.users && this.users.length) return mostCheckins(this.users).id
+      },
+      kingdom() {
+        
       }
     }
   })
@@ -35,6 +38,10 @@ function mostCheckins(users) {
     if (greatest.checkin.quantity < user.checkin.quantity) greatest = user
     return greatest
   }, {})
+}
+
+function strongestKingdom(kingdoms) {
+  
 }
 
 module.exports = Establishment;

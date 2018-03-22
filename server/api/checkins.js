@@ -26,7 +26,7 @@ router.post('/', asyncHandler(async (req, res, next) => {
   const checkin = await Checkin.scope('populated').create({
     userId: +userId, establishmentId: +establishmentId, lastCheckin: new Date()
   })
-  await updateKeeper(establishmentId)
+  await updateKeeper(+establishmentId)
   res.json(checkin);
 }
 ))
@@ -34,10 +34,11 @@ router.post('/', asyncHandler(async (req, res, next) => {
 router.put('/', asyncHandler(async (req, res, next) => {
   const userId = +req.query.user;
   const establishmentId = +req.query.establishment;
-  const checkin = await Checkin.scope('populated').findOne({
+  const checkin = await Checkin.scope('populated').findOrCreate({
     where: { userId, establishmentId },
+    defaults: { lastCheckin: new Date() }
   });
-  const updated = await checkin.update({ lastCheckin: new Date() });
+  const updated = checkin[1] ? checkin[0] : await checkin[0].update({ lastCheckin: new Date() })
   await updateKeeper(establishmentId)
   res.json(updated);
 }))
@@ -45,7 +46,5 @@ router.put('/', asyncHandler(async (req, res, next) => {
 async function updateKeeper(establishmentId) {
   const establishment = await Establishment.scope('populated').findById(establishmentId)
   const keeper = await User.scope('populated').findById(establishment.keeper)
-  console.log(keeper.experience, keeper.email)
-  keeper.addExperience()
-  console.log(keeper.experience)
+  await keeper.update({isEdited: true})
 }
