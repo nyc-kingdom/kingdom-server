@@ -25,14 +25,14 @@ async function seed() {
   ])
 
   await Promise.all([
-    Establishment.create({ name: 'Analogue' }),
-    Establishment.create({ name: 'Starbucks' }),
-    Establishment.create({ name: 'Killarneys' }),
-    Establishment.create({ name: 'Fullstack' }),
-    Establishment.create({ name: 'Little Mo' }),
-    Establishment.create({ name: 'Baby Skips' }),
-    Establishment.create({ name: 'Astoria Beer Garden' }),
-    Establishment.create({ name: 'PS1' })
+    Establishment.create({ name: 'Analogue', latitude: 40.669605, longitude: -73.995514, fourSquareId: '1', kingdom: 'Lefferts Gardens' }),
+    Establishment.create({ name: 'Starbucks', latitude: 40.673823, longitude: -73.999095, fourSquareId: '2', kingdom: 'Lefferts Gardens' }),
+    Establishment.create({ name: 'Killarneys', latitude: 40.673938, longitude: -74.109050, fourSquareId: '3', kingdom: 'Financial District'  }),
+    Establishment.create({ name: 'Fullstack', latitude: 40.705076, longitude: -74.009160, fourSquareId: '4', kingdom: 'Financial District'}),
+    Establishment.create({ name: 'Little Mo', latitude: 40.696494, longitude: -73.929491, fourSquareId: '5', kingdom: 'Bushwick' }),
+    Establishment.create({ name: 'Baby Skips', latitude: 40.702962, longitude: -73.930221, fourSquareId: '6', kingdom: 'Bushwick'  }),
+    Establishment.create({ name: 'Astoria Beer Garden', latitude: 40.769801, longitude: -73.922956, fourSquareId: '7', kingdom: 'Astoria' }),
+    Establishment.create({ name: 'PS1', latitude: 40.745595, longitude: -73.947095, fourSquareId: '8', kingdom: 'Astoria' })
   ])
 
   await Promise.all([
