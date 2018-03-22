@@ -1,5 +1,7 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require('sequelize')
+const db = require('../db')
+const Establishment = require('./establishment')
+const User = ('./user')
 
 const Checkin = db.define('checkin', {
   quantity: {

@@ -13,7 +13,7 @@ const Kingdom = db.define('kingdom', {
       populated: {
         include: [{ all: true, nested: true }]
       }
-    }
+    },
   })
 
 module.exports = Kingdom;

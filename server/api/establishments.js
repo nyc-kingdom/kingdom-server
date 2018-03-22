@@ -1,30 +1,21 @@
 const router = require('express').Router()
-const {Establishment, Checkin} = require('../db/models')
+const { Establishment, Checkin, Castle } = require('../db/models')
+const asyncHandler = require('express-async-handler')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
-  try {
-    const establishments = await Establishment.scope('populated').findAll();
-    console.log(establishments[0].keeper)
-    res.json(establishments);
-  } catch (error) {
-    next(error);
-  }
-})
+router.get('/', asyncHandler(async (req, res, next) => {
+  const establishments = await Establishment.scope('populated').findAll();
+  res.json(establishments);
+}))
 
-router.post('/', async (req, res, next) => {
-  console.log('anyone home')
-  try {
-    const { name, address, longitude, latitude, userId } = req.body;
-    const establishment = await Establishment.create({ name, address, longitude, latitude }, {
-      include: [{ all: true, nested: true }]
-    })
-    const establishmentId = establishment.id
-    await Checkin.create({ userId: +userId, establishmentId }, {
-      include: [{ all: true, nested: true }]
-    })
-    res.json(establishment);
-  } catch (error) {
-    next(error);
-  }
-});
+router.post('/', asyncHandler(async (req, res, next) => {
+  const { name, address, longitude, latitude, userId, kingdomId } = req.body;
+  const establishment = await Establishment.scope('populated').create({
+    name, address, longitude, latitude
+  })
+  const establishmentId = establishment.id
+  await Checkin.create({ userId, establishmentId })
+  await Castle.create({ kingdomId, establishmentId })
+  res.json(establishment);
+}
+))
