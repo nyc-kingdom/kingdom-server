@@ -23,14 +23,6 @@ const Establishment = db.define('establishment', {
       }
     },
     getterMethods: {
-      // async keeper() {
-      //   const checkins = await Checkin.findAll({
-      //     where: {establishmentId: this.id}
-      //     })
-      //   const greatestQuantity = mostCheckins(checkins)
-      //   console.log(greatestQuantity.userId)
-      //   return greatestQuantity.userId
-      // }
       keeper() {
         if (this.users && this.users.length) return mostCheckins(this.users).id
       }
