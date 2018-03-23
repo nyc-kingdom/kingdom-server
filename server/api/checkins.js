@@ -43,6 +43,10 @@ router.put('/', asyncHandler(async (req, res, next) => {
   res.json(updated);
 }))
 
+// router.put('/foursquare', asyncHandler(async (req, res, next) => {
+
+// }))
+
 async function updateKeeper(establishmentId) {
   const establishment = await Establishment.scope('populated').findById(establishmentId)
   const keeper = await User.scope('populated').findById(establishment.keeper)
