@@ -2,6 +2,8 @@ const router = require('express').Router()
 const { Establishment, Checkin, Castle, User } = require('../db/models')
 const asyncHandler = require('express-async-handler')
 module.exports = router
+const axios = require('axios')
+const flickr = process.env.FLICKR_API_KEY
 
 router.get('/', asyncHandler(async (req, res, next) => {
   const establishments = await Establishment.scope('populated').findAll();
@@ -21,11 +23,22 @@ router.post('/', asyncHandler(async (req, res, next) => {
 ))
 
 router.put('/', asyncHandler(async (req, res, next) => {
-  const { place, user, kingdom } = req.body
+  const { place, user } = req.body
   const { id, location, name } = place
   const latitude = location.lat
   const longitude = location.lng
   const fourSquareId = id
+  const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${latitude}&lon=${longitude}&format=json&nojsoncallback=1`)
+
+  const fsq = await axios.post(`https://api.foursquare.com/v2/checkins/add?venueId=${place.id}&v=20170801&oauth_token=${user.token}`).data
+  const kingdom = flckr.data.places.place[0].woe_name
+  console.log(fsq)
+
+      // Promise.all([flckr, fsq]).then(resArr => {
+      //   const kingdom = flckr.places.place[0].woe_name
+      //   console.log('THIS IS OUR KINGDOM ', kingdom)
+      //   console.log('CHECKIN BUNDLE ', fsq)
+
   const establishment = await Establishment.scope('populated').findOrCreate({
     where: { fourSquareId },
     defaults: { name, fourSquareId, latitude, longitude, kingdom }

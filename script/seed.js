@@ -36,18 +36,6 @@ async function seed() {
   ])
 
   await Promise.all([
-    Checkin.create({ quantity: 1, userId: 1, establishmentId: 3 }),
-    Checkin.create({ quantity: 5, userId: 1, establishmentId: 4 }),
-    Checkin.create({ quantity: 1, userId: 2, establishmentId: 5 }),
-    Checkin.create({ quantity: 2, userId: 2, establishmentId: 6 }),
-    Checkin.create({ quantity: 1, userId: 2, establishmentId: 4 }),
-    Checkin.create({ quantity: 2, userId: 3, establishmentId: 7 }),
-    Checkin.create({ quantity: 5, userId: 3, establishmentId: 8 }),
-    Checkin.create({ quantity: 2, userId: 4, establishmentId: 1 }),
-    Checkin.create({ quantity: 3, userId: 4, establishmentId: 2 }),
-  ])
-
-  await Promise.all([
     Checkin.create({ quantity: 1, userId: 1, establishmentId: 3, fourSquareIds: ['1', '2', '3'] }),
     Checkin.create({ quantity: 5, userId: 1, establishmentId: 4, fourSquareIds: ['4', '5', '6'] }),
     Checkin.create({ quantity: 1, userId: 2, establishmentId: 5, fourSquareIds: ['7', '8', '9'] }),
