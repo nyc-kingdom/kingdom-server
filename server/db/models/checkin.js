@@ -11,6 +11,9 @@ const Checkin = db.define('checkin', {
   lastCheckin: {
     type: Sequelize.DATE,
   },
+  fourSquareIds: {
+    type: Sequelize.ARRAY(Sequelize.STRING)
+  }
 }, {
     scopes: {
       populated: {

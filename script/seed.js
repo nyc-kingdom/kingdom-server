@@ -36,27 +36,16 @@ async function seed() {
   ])
 
   await Promise.all([
-    Checkin.create({ quantity: 1, userId: 1, establishmentId: 3 }),
-    Checkin.create({ quantity: 5, userId: 1, establishmentId: 4 }),
-    Checkin.create({ quantity: 1, userId: 2, establishmentId: 5 }),
-    Checkin.create({ quantity: 2, userId: 2, establishmentId: 6 }),
-    Checkin.create({ quantity: 1, userId: 2, establishmentId: 4 }),
-    Checkin.create({ quantity: 2, userId: 3, establishmentId: 7 }),
-    Checkin.create({ quantity: 5, userId: 3, establishmentId: 8 }),
-    Checkin.create({ quantity: 2, userId: 4, establishmentId: 1 }),
-    Checkin.create({ quantity: 3, userId: 4, establishmentId: 2 }),
-  ])
-
-  await Promise.all([
-    Castle.create({ kingdomId: 3, establishmentId: 1 }),
-    Castle.create({ strength: 5, kingdomId: 3, establishmentId: 4 }),
-    Castle.create({ kingdomId: 4, establishmentId: 5 }),
-    Castle.create({ strength: 2, kingdomId: 4, establishmentId: 6 }),
-    Castle.create({ kingdomId: 4, establishmentId: 4 }),
-    Castle.create({ strength: 2, kingdomId: 1, establishmentId: 7 }),
-    Castle.create({ strength: 5, kingdomId: 3, establishmentId: 8 }),
-    Castle.create({ strength: 2, kingdomId: 2, establishmentId: 1 }),
-    Castle.create({ strength: 3, kingdomId: 2, establishmentId: 2 }),
+    Checkin.create({ quantity: 1, userId: 1, establishmentId: 3, fourSquareIds: ['1', '2', '3'] }),
+    Checkin.create({ quantity: 5, userId: 1, establishmentId: 4, fourSquareIds: ['4', '5', '6'] }),
+    Checkin.create({ quantity: 1, userId: 2, establishmentId: 5, fourSquareIds: ['7', '8', '9'] }),
+    Checkin.create({quantity: 2, userId: 2, establishmentId: 6}),
+    Checkin.create({quantity: 5, userId: 2, establishmentId: 4}),
+    Checkin.create({quantity: 2, userId: 3, establishmentId: 7}),
+    Checkin.create({quantity: 5, userId: 3, establishmentId: 8}),
+    Checkin.create({quantity: 2, userId: 4, establishmentId: 1}),
+    Checkin.create({quantity: 3, userId: 4, establishmentId: 2}),
+    
   ])
 
   console.log(`seeded ${users.length} users`)
