@@ -35,7 +35,7 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
   router.get('/', passport.authenticate('foursquare', { scope: 'email' }))
 
   router.get('/callback', passport.authenticate('foursquare', {
-    successRedirect: 'http://localhost:3000',
+    successRedirect: 'http://localhost:3000/dashboard',
     failureRedirect: '/api/users'
   })
   )
