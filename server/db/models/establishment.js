@@ -30,7 +30,7 @@ const Establishment = db.define('establishment', {
         if (this.checkins) return mostCheckins(this.checkins)
       },
       allegiance() {
-        if (this.kingdoms) return strongestKingdom(this.kingdoms)
+        if (this.kingdoms.length) return strongestKingdom(this.kingdoms)
       }
     }
   })
