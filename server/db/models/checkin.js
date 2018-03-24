@@ -1,8 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const Establishment = require('./establishment')
 const User = ('./user')
-
 const Checkin = db.define('checkin', {
   quantity: {
     type: Sequelize.INTEGER,
@@ -11,8 +9,8 @@ const Checkin = db.define('checkin', {
   lastCheckin: {
     type: Sequelize.DATE,
   },
-  fourSquareIds: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
+  fourSquareId: {
+    type: Sequelize.STRING
   }
 }, {
     scopes: {
@@ -22,8 +20,8 @@ const Checkin = db.define('checkin', {
     }
   })
 
-Checkin.beforeUpdate(checkin => {
-  checkin.quantity = checkin.quantity += 1;
-})
+// Checkin.beforeUpdate(checkin => {
+//   checkin.quantity = checkin.quantity += 1;
+// })
 
 module.exports = Checkin;
