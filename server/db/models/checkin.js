@@ -15,7 +15,7 @@ const Checkin = db.define('checkin', {
 }, {
     scopes: {
       populated: {
-        include: [{ all: true, nested: true }]
+        include: [{ all: true}]
       }
     }
   })
