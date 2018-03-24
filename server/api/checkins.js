@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { Checkin, Establishment, User } = require('../db/models');
 const asyncHandler = require('express-async-handler')
+const axios = require('axios')
 module.exports = router;
 
 router.get('/', asyncHandler(async (req, res, next) => {
@@ -26,7 +27,7 @@ router.post('/', asyncHandler(async (req, res, next) => {
   const checkin = await Checkin.scope('populated').create({
     userId: +userId, establishmentId: +establishmentId, lastCheckin: new Date()
   })
-  await updateKeeper(+establishmentId)
+  //await updateKeeper(+establishmentId)
   res.json(checkin);
 }
 ))
@@ -42,10 +43,6 @@ router.put('/', asyncHandler(async (req, res, next) => {
   await updateKeeper(establishmentId)
   res.json(updated);
 }))
-
-// router.put('/foursquare', asyncHandler(async (req, res, next) => {
-
-// }))
 
 async function updateKeeper(establishmentId) {
   const establishment = await Establishment.scope('populated').findById(establishmentId)
