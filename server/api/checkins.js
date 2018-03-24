@@ -27,7 +27,7 @@ router.post('/', asyncHandler(async (req, res, next) => {
   const checkin = await Checkin.scope('populated').create({
     userId: +userId, establishmentId: +establishmentId, lastCheckin: new Date()
   })
-  await updateKeeper(+establishmentId)
+  //await updateKeeper(+establishmentId)
   res.json(checkin);
 }
 ))

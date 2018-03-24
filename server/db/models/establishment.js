@@ -15,7 +15,8 @@ const Establishment = db.define('establishment', {
   },
   longitude: {
     type: Sequelize.DECIMAL
-  }, kingdom: {
+  },
+  kingdom: {
     type: Sequelize.STRING
   }
 }, {
@@ -26,21 +27,22 @@ const Establishment = db.define('establishment', {
     },
     getterMethods: {
       keeper() {
-        if (this.users && this.users.length) return mostCheckins(this.users).id
+        if (this.checkins) return mostCheckins(this.checkins)
       },
-      kingdom() {
-
+      allegiance() {
+        if (this.kingdoms) return strongestKingdom(this.kingdoms)
       }
     }
   })
 
-function mostCheckins(users) {
-  return users.reduce((greatest, user) => {
-    if (!greatest.checkin) greatest = user
-    if (greatest.checkin.quantity < user.checkin.quantity) greatest = user
-    return greatest
-  }, {})
+function mostCheckins(checkins) {
+  const sortedCheckins = checkins.sort((first, next) => first.quantity - next.quantity)
+  return sortedCheckins[sortedCheckins.length - 1].userId
 }
 
+function strongestKingdom(kingdoms) {
+  const sortedKingdom = kingdoms.sort((first, next) => first.castle.strenth - next.castle.strenth)
+  return sortedKingdom[sortedKingdom.length - 1].name
+}
 
 module.exports = Establishment;

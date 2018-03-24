@@ -6,8 +6,13 @@ const axios = require('axios')
 const flickr = process.env.FLICKR_API_KEY
 
 router.get('/', asyncHandler(async (req, res, next) => {
-  const establishments = await Establishment.scope('populated').findAll();
-  res.json(establishments);
+  const establishments = await Establishment.scope('populated').findAll()
+  res.json(establishments)
+}))
+
+router.get('/:id', asyncHandler(async (req, res, next) => {
+  const establishments = await Establishment.scope('populated').findById(req.params.id)
+  res.json(establishments)
 }))
 
 router.post('/', asyncHandler(async (req, res, next) => {
