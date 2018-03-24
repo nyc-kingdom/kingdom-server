@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const Checkin = require('./checkin')
 
 const Establishment = db.define('establishment', {
   name: {
@@ -27,10 +26,10 @@ const Establishment = db.define('establishment', {
     },
     getterMethods: {
       keeper() {
-        if (this.checkins) return mostCheckins(this.checkins)
+        if (this.checkins && this.checkins.length) return mostCheckins(this.checkins)
       },
       allegiance() {
-        if (this.kingdoms.length) return strongestKingdom(this.kingdoms)
+        if (this.kingdoms && this.kingdoms.length) return strongestKingdom(this.kingdoms)
       }
     }
   })
@@ -42,7 +41,7 @@ function mostCheckins(checkins) {
 
 function strongestKingdom(kingdoms) {
   const sortedKingdom = kingdoms.sort((first, next) => first.castle.strenth - next.castle.strenth)
-  return sortedKingdom[sortedKingdom.length - 1].name
+  return sortedKingdom[sortedKingdom.length - 1].id
 }
 
 module.exports = Establishment;

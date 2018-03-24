@@ -28,25 +28,26 @@ router.post('/', asyncHandler(async (req, res, next) => {
 ))
 
 router.put('/', asyncHandler(async (req, res, next) => {
+  console.log('hit this route')
   const { place, user } = req.body
   const { id, location, name } = place
   const latitude = location.lat
   const longitude = location.lng
-  const fourSquareId = id
-  const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${latitude}&lon=${longitude}&format=json&nojsoncallback=1`)
+  //const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${latitude}&lon=${longitude}&format=json&nojsoncallback=1`)
 
-  const fsq = await axios.post(`https://api.foursquare.com/v2/checkins/add?venueId=${place.id}&v=20170801&oauth_token=${user.token}`)
-  const kingdom = flckr.data.places.place[0].woe_name
-  const checkinId = fsq.data.response.checkin.id
-  const establishment = await Establishment.scope('populated').findOrCreate({
-    where: { fourSquareId },
-    defaults: { name, fourSquareId, latitude, longitude, kingdom }
-  })
-  const establishmentId = establishment[0].id
-  const checkin = await createCheckin(user, establishmentId, checkinId)
-  await updateKeeper(establishmentId)
-  await updateCastle(user.kingdomId, establishmentId)
-  res.json(checkin)
+  //const fsq = await axios.post(`https://api.foursquare.com/v2/checkins/add?venueId=${place.id}&v=20170801&oauth_token=${user.token}`)
+  //const kingdom = flckr.data.places.place[0].woe_name
+  //const checkinId = fsq.data.response.checkin.id
+  //const establishmentId = await findOrCreateEstablishment(name, id, latitude, longitude ).id
+  // const establishment = await Establishment.scope('populated').findOrCreate({
+  //   where: { fourSquareId: id },
+  //   defaults: { name, fourSquareId: id, latitude, longitude, kingdom }
+  // })
+  //const establishmentId = establishment[0].id
+  //const checkin = await createCheckin(user, establishmentId, checkinId)
+  // await updateKeeper(establishmentId)
+  // await updateCastle(user.kingdomId, establishmentId)
+  //res.json(checkin)
 }))
 
 router.put('/foursquare', asyncHandler(async (req, res, next) => {
@@ -70,12 +71,23 @@ router.put('/foursquare', asyncHandler(async (req, res, next) => {
       defaults: { name, fourSquareId: id, latitude: lat, longitude: lng}
     })
   }))
-  await Promise.all(filteredCheckins.map(async(checkin) => {
+  const checkins = await Promise.all(filteredCheckins.map(async(checkin) => {
     const establishment = await Establishment.findOne({where: {fourSquareId: checkin.venue.id}})
     return createCheckin(user, establishment.id, checkin.id)
   }))
   console.log(filteredCheckins.length)
+  res.send(checkins)
 }))
+
+async function findOrCreateEstablishment(name, fourSquareId, latitude, longitude ) {
+  const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${latitude}&lon=${longitude}&format=json&nojsoncallback=1`)
+  const kingdom = flckr.data.places.place[0].woe_name
+  const establishment = await Establishment.scope('populated').findOrCreate({
+    where: { fourSquareId },
+    defaults: { name, fourSquareId, latitude, longitude, kingdom }
+  })
+  return establishment[0]
+}
 
 async function createCheckin(user, establishmentId, fourSquareId) {
   const checkin = await Checkin.scope('populated').create({ userId: user.id, establishmentId, fourSquareId })

@@ -11,7 +11,7 @@ const Kingdom = db.define('kingdom', {
 }, {
     scopes: {
       populated: {
-        include: [{ all: true, nested: true }]
+        include: [{ all: true }]
       }
     },
   })

@@ -5,6 +5,7 @@ const axios = require('axios')
 module.exports = router;
 
 router.get('/', asyncHandler(async (req, res, next) => {
+  console.log('hit this route')
   let checkins
   if (req.query.user) {
     checkins = await Checkin.scope('populated').findAll({
@@ -17,9 +18,9 @@ router.get('/', asyncHandler(async (req, res, next) => {
     })
   }
   if (!req.query.user && !req.query.establishment) {
-    checkins = await Checkin.scope('populated').findAll()
+   checkins = await Checkin.findAll()
   }
-  res.json(checkins)
+  res.send(checkins)
 }))
 
 router.post('/', asyncHandler(async (req, res, next) => {
