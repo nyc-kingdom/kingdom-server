@@ -36,7 +36,7 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
 
   router.get('/callback', passport.authenticate('foursquare', {
     successRedirect: 'http://localhost:3000/dashboard',
-    failureRedirect: '/api/users'
+    failureRedirect: 'http://localhost:3000/'
   })
   )
 }
