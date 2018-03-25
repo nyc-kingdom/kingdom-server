@@ -20,13 +20,3 @@ router.get('/', asyncHandler( async(req, res, next) => {
   }
   res.json(castles)
 }))
-
-router.put('/', asyncHandler( async(req, res, next) => {
-  const kingdomId = +req.query.kingdom
-  const establishmentId = +req.query.establishment
-  const castle = await Castle.findOrCreate({
-    where: { kingdomId, establishmentId}
-  })
-  if (!castle[1]) await castle[0].addStrength()
-  res.json(castle[0])
-}))

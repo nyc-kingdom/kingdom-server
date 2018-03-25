@@ -11,71 +11,39 @@ router.get('/', asyncHandler(async (req, res, next) => {
 }))
 
 router.get('/:id', asyncHandler(async (req, res, next) => {
-  const establishments = await Establishment.scope('populated').findById(req.params.id)
-  res.json(establishments)
+  const establishment = await Establishment.scope('populated').findById(+req.params.id)
+  res.json(establishment)
 }))
 
-router.post('/', asyncHandler(async (req, res, next) => {
-  const { name, fourSquareId, userId, kingdomId } = req.body;
-  const establishment = await Establishment.scope('populated').create({
-    name, fourSquareId
-  })
-  const establishmentId = establishment.id
-  await Checkin.create({ userId, establishmentId })
-  await Castle.create({ kingdomId, establishmentId })
-  res.json(establishment);
-}
-))
-
 router.put('/', asyncHandler(async (req, res, next) => {
-  console.log('hit this route')
   const { place, user } = req.body
   const { id, location, name } = place
   const latitude = location.lat
   const longitude = location.lng
-  //const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${latitude}&lon=${longitude}&format=json&nojsoncallback=1`)
-
-  //const fsq = await axios.post(`https://api.foursquare.com/v2/checkins/add?venueId=${place.id}&v=20170801&oauth_token=${user.token}`)
-  //const kingdom = flckr.data.places.place[0].woe_name
-  //const checkinId = fsq.data.response.checkin.id
-  //const establishmentId = await findOrCreateEstablishment(name, id, latitude, longitude ).id
-  // const establishment = await Establishment.scope('populated').findOrCreate({
-  //   where: { fourSquareId: id },
-  //   defaults: { name, fourSquareId: id, latitude, longitude, kingdom }
-  // })
-  //const establishmentId = establishment[0].id
-  //const checkin = await createCheckin(user, establishmentId, checkinId)
-  // await updateKeeper(establishmentId)
-  // await updateCastle(user.kingdomId, establishmentId)
-  //res.json(checkin)
+  const fsq = await axios.post(`https://api.foursquare.com/v2/checkins/add?venueId=${place.id}&v=20170801&oauth_token=${user.token}`)
+  const checkinId = fsq.data.response.checkin.id
+  const establishment = await findOrCreateEstablishment(name, id, latitude, longitude)
+  const checkin = await createCheckin(user, establishment.id, checkinId)
+  res.json(checkin)
 }))
 
 router.put('/foursquare', asyncHandler(async (req, res, next) => {
   const user = req.body.user
   const foursquareCheckins = await axios.get(`https://api.foursquare.com/v2/users/self/checkins?v=20170801&oauth_token=${user.token}`)
-  const checkinsRes = foursquareCheckins.data.response.checkins
-  const checkinsArr = checkinsRes.items
+  const checkinsArr = foursquareCheckins.data.response.checkins.items
   const inDb = await Checkin.findAll({where: {userId: user.id}})
-  const filteredCheckins = checkinsArr.filter(checkin => {
-    return !inDb.find(elem => elem.fourSquareId === checkin.id)
-  })
-  const establishmentArr = filteredCheckins.reduce((array, checkin) => {
-    array.push(checkin.venue)
-    return array
-  }, [])
-  await Promise.all(establishmentArr.map(place => {
+  const filteredCheckins = checkinsArr.filter(checkin => !inDb.find(elem => elem.fourSquareId === checkin.id))
+  const establishmentArr = filteredCheckins.map(checkin => checkin.venue)
+  await Promise.all(establishmentArr.map(async(place) => {
     const { id, name, location } = place
     const { lat, lng } = location
-    return Establishment.scope('populated').findOrCreate({
-      where: { fourSquareId: id },
-      defaults: { name, fourSquareId: id, latitude: lat, longitude: lng}
-    })
+    const establishments = await findOrCreateEstablishment(name, id, lat, lng)
+    return establishments
   }))
   const checkins = await Promise.all(filteredCheckins.map(async(checkin) => {
     const establishment = await Establishment.findOne({where: {fourSquareId: checkin.venue.id}})
     return createCheckin(user, establishment.id, checkin.id)
   }))
-  console.log(filteredCheckins.length)
   res.send(checkins)
 }))
 

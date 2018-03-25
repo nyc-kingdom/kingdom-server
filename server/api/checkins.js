@@ -1,11 +1,9 @@
 const router = require('express').Router();
-const { Checkin, Establishment, User } = require('../db/models');
+const { Checkin } = require('../db/models');
 const asyncHandler = require('express-async-handler')
-const axios = require('axios')
 module.exports = router;
 
 router.get('/', asyncHandler(async (req, res, next) => {
-  console.log('hit this route')
   let checkins
   if (req.query.user) {
     checkins = await Checkin.scope('populated').findAll({
@@ -22,31 +20,3 @@ router.get('/', asyncHandler(async (req, res, next) => {
   }
   res.send(checkins)
 }))
-
-router.post('/', asyncHandler(async (req, res, next) => {
-  const { userId, establishmentId } = req.body;
-  const checkin = await Checkin.scope('populated').create({
-    userId: +userId, establishmentId: +establishmentId, lastCheckin: new Date()
-  })
-  //await updateKeeper(+establishmentId)
-  res.json(checkin);
-}
-))
-
-router.put('/', asyncHandler(async (req, res, next) => {
-  const userId = +req.query.user;
-  const establishmentId = +req.query.establishment;
-  const checkin = await Checkin.scope('populated').findOrCreate({
-    where: { userId, establishmentId },
-    defaults: { lastCheckin: new Date() }
-  });
-  const updated = checkin[1] ? checkin[0] : await checkin[0].update({ lastCheckin: new Date() })
-  await updateKeeper(establishmentId)
-  res.json(updated);
-}))
-
-async function updateKeeper(establishmentId) {
-  const establishment = await Establishment.scope('populated').findById(establishmentId)
-  const keeper = await User.scope('populated').findById(establishment.keeper)
-  await keeper.update({isEdited: true})
-}
