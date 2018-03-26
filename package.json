@@ -7,8 +7,6 @@
   },
   "main": "index.js",
   "scripts": {
-    "build-client": "webpack",
-    "build-client-watch": "webpack -w",
     "deploy": "script/deploy",
     "lint": "eslint ./ --ignore-path .gitignore",
     "prepush": "npm run lint && npm test",
