@@ -9,12 +9,11 @@ module.exports = router
 
 router.get('/', (req, res, next) => {
   User.scope('populated').findAll({
-    attributes: ['id', 'email']
+    attributes: ['id', 'username', 'experience']
   })
     .then(users => res.json(users))
     .catch(next)
 })
-
 
 router.get('/:id', async (req, res, next) => {
   try {
@@ -36,7 +35,8 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
     where: { name: kingdomName },
   });
   await User.update(
-    { kingdomId: kingdom[0].dataValues.id,
+    {
+      kingdomId: kingdom[0].dataValues.id,
       username: username
      },
     { where: { id: userId } }
