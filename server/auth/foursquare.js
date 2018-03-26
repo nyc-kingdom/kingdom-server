@@ -2,6 +2,8 @@ const passport = require('passport')
 const router = require('express').Router()
 const FoursquareStrategy = require('passport-foursquare').Strategy;
 const { User } = require('../db/models')
+const deployedUrl = 'https://condescending-panini-ddd503.netlify.com'
+const devUrl = 'http://localhost:3000'
 module.exports = router
 
 if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
@@ -35,8 +37,8 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
   router.get('/', passport.authenticate('foursquare', { scope: 'email' }))
 
   router.get('/callback', passport.authenticate('foursquare', {
-    successRedirect: 'http://localhost:3000/dashboard',
-    failureRedirect: 'http://localhost:3000/'
+    successRedirect: `${deployedUrl}/dashboard`,
+    failureRedirect: `${deployedUrl}/`
   })
   )
 }
