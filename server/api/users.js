@@ -9,12 +9,11 @@ module.exports = router
 
 router.get('/', (req, res, next) => {
   User.scope('populated').findAll({
-    attributes: ['id', 'email']
+    attributes: ['id', 'username', 'experience']
   })
     .then(users => res.json(users))
     .catch(next)
 })
-
 
 router.get('/:id', async (req, res, next) => {
   try {
@@ -27,7 +26,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.put('/:id', asyncHandler(async (req, res, next) => {
   const userId = +req.params.id;
-  const { address } = req.body
+  const { address, username } = req.body
   const googleCoords = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${googleMap}`)
   const { lat, lng } = googleCoords.data.results[0].geometry.location
   const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${lat}&lon=${lng}&format=json&nojsoncallback=1`)
@@ -36,7 +35,7 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
     where: { name: kingdomName },
   });
   await User.update(
-    { kingdomId: kingdom[0].dataValues.id },
+    { kingdomId: kingdom[0].dataValues.id, username },
     { where: { id: userId } }
   );
   const updated = await User.scope('populated').findById(userId)

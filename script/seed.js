@@ -18,10 +18,10 @@ async function seed() {
   ])
 
   const users = await Promise.all([
-    User.scope('populated').create({ email: 'dongwoo@email.com', kingdomId: 2 }),
-    User.scope('populated').create({ email: 'connor@gmail.com', kingdomId: 3 }),
-    User.scope('populated').create({ email: 'bruce@gmail.com', kingdomId: 4 }),
-    User.scope('populated').create({ email: 'phil@email.com', kingdomId: 1 }),
+    User.scope('populated').create({ username: 'dongwoo', email: 'dongwoo@email.com', kingdomId: 2 }),
+    User.scope('populated').create({ username: 'connor', email: 'connor@gmail.com', kingdomId: 3 }),
+    User.scope('populated').create({ username: 'bruce', email: 'bruce@gmail.com', kingdomId: 4 }),
+    User.scope('populated').create({ username: 'phil', email: 'phil@email.com', kingdomId: 1 }),
   ])
 
   await Promise.all([
