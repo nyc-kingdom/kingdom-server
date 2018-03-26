@@ -35,7 +35,10 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
     where: { name: kingdomName },
   });
   await User.update(
-    { kingdomId: kingdom[0].dataValues.id, username },
+    {
+      kingdomId: kingdom[0].dataValues.id,
+      username: username
+     },
     { where: { id: userId } }
   );
   const updated = await User.scope('populated').findById(userId)
