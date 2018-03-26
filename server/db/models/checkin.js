@@ -20,14 +20,11 @@ const Checkin = db.define('checkin', {
     }
   })
 
-// Checkin.beforeUpdate(checkin => {
-//   checkin.quantity = checkin.quantity += 1;
-// })
-
 Checkin.beforeCreate(async (checkin) => {
   const user = await User.scope('populated').findById(checkin.userId)
   const checkins = user.checkins.filter(elem => elem.establishmentId === checkin.establishmentId)
-  checkin.update({quantity: (checkins.length++)})
+  const quantity = checkins.length += 1
+  checkin.quantity = quantity
 })
 
 module.exports = Checkin;
