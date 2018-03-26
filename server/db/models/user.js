@@ -7,6 +7,9 @@ const User = db.define('user', {
     unique: true,
     allowNull: false
   },
+  username: {
+    type: Sequelize.STRING
+  },
   foursquareId: {
     type: Sequelize.STRING
   },
