@@ -38,13 +38,13 @@ const Establishment = db.define('establishment', {
   })
 
 function mostCheckins(checkins) {
-  const sortedCheckins = checkins.sort((first, next) => first.quantity - next.quantity)
-  return sortedCheckins[sortedCheckins.length - 1].userId
+  const sortedCheckins = checkins.sort((first, next) => first.quantity - next.quantity).reverse()
+  return sortedCheckins[0].userId
 }
 
 function strongestKingdom(kingdoms) {
-  const sortedKingdom = kingdoms.sort((first, next) => first.castle.strenth - next.castle.strenth)
-  return sortedKingdom[sortedKingdom.length - 1].id
+  const sortedKingdom = kingdoms.sort((first, next) => first.castle.strenth - next.castle.strenth).reverse()
+  return sortedKingdom[0].id
 }
 
 module.exports = Establishment;

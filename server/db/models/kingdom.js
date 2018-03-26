@@ -1,5 +1,6 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require('sequelize')
+const db = require('../db')
+const Establishment = require('./establishment')
 
 const Kingdom = db.define('kingdom', {
   name: {
@@ -21,7 +22,7 @@ const Kingdom = db.define('kingdom', {
           return power
         }, 0)
         : 0
-      }
+      },
     }
   })
 
