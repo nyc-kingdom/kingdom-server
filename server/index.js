@@ -7,6 +7,7 @@ const compression = require('compression')
 const passport = require('passport')
 //const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const db = require('./db')
+const cors = require('cors')
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
@@ -49,10 +50,20 @@ const createApp = () => {
   app.use(passport.initialize())
 
   app.use(passport.session())
+
+  
+  const whitelist = [devUrl, deployedUrl]
+  const corsOptions = {
+    origin: whitelist,
+    allowedHeaders: 'X-Requested-With, Content-Type, Accept',
+    methods: '*',
+    credentials: true
+  }
+  app.use(cors(corsOptions))
+
   app.use(function(req, res, next) {
-    // if (process.env.NODE_ENV !== 'production') res.header('Access-Control-Allow-Origin', devUrl)
-    // if (process.env.NODE_ENV === 'production') res.header('Access-Control-Allow-Origin', deployedUrl)
-    res.header('Access-Control-Allow-Origin', '*')
+    if (process.env.NODE_ENV !== 'production') res.header('Access-Control-Allow-Origin', devUrl)
+    if (process.env.NODE_ENV === 'production') res.header('Access-Control-Allow-Origin', deployedUrl)
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     res.header('Access-Control-Allow-Credentials', 'true')
     res.header('Access-Control-Allow-Methods', '*')
