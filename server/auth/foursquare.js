@@ -2,9 +2,12 @@ const passport = require('passport')
 const router = require('express').Router()
 const FoursquareStrategy = require('passport-foursquare').Strategy;
 const { User } = require('../db/models')
-const deployedUrl = 'https://condescending-panini-ddd503.netlify.com'
+const deployedUrl = 'nyc-kingdom.com'
 const devUrl = 'http://localhost:3000'
 module.exports = router
+
+console.log("which enviroment", process.env)
+
 
 if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
 
