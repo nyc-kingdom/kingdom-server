@@ -18,11 +18,9 @@ router.get('/:id', asyncHandler(async (req, res, next) => {
 router.put('/', asyncHandler(async (req, res, next) => {
   const { place, user } = req.body
   const { id, location, name } = place
-  const latitude = location.lat
-  const longitude = location.lng
   const fsq = await axios.post(`https://api.foursquare.com/v2/checkins/add?venueId=${place.id}&v=20170801&oauth_token=${user.token}`)
   const checkinId = fsq.data.response.checkin.id
-  const establishment = await findOrCreateEstablishment(name, id, latitude, longitude)
+  const establishment = await findOrCreateEstablishment(name, id, location.latitude, location.longitude)
   const checkin = await createCheckin(user, establishment.id, checkinId)
   res.json(checkin)
 }))
@@ -36,8 +34,7 @@ router.put('/foursquare', asyncHandler(async (req, res, next) => {
   const establishmentArr = filteredCheckins.map(checkin => checkin.venue)
   await Promise.all(establishmentArr.map(async(place) => {
     const { id, name, location } = place
-    const { lat, lng } = location
-    const establishments = await findOrCreateEstablishment(name, id, lat, lng)
+    const establishments = await findOrCreateEstablishment(name, id, location.lat, location.lng)
     return establishments
   }))
   const checkins = await Promise.all(filteredCheckins.map(async(checkin) => {

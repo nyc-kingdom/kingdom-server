@@ -26,24 +26,25 @@ const Establishment = db.define('establishment', {
     },
     getterMethods: {
       keeper() {
-        if (this.checkins && this.checkins.length) return mostCheckins(this.checkins)
+        return this.checkins && this.checkins.length ? mostCheckins(this.checkins) : null
       },
       allegiance() {
-        if (this.kingdoms && this.kingdoms.length) return strongestKingdom(this.kingdoms)
+        return this.kingdoms && this.kingdoms.length ? strongestKingdom(this.kingdoms) : null
+      },
+      popularity() {
+        return this.checkins ? this.checkins.length : 0
       }
     }
   })
 
 function mostCheckins(checkins) {
-  const sortedCheckins = checkins.sort((first, next) => first.quantity - next.quantity)
-  return sortedCheckins[sortedCheckins.length - 1].userId
+  const sortedCheckins = checkins.sort((first, next) => first.quantity - next.quantity).reverse()
+  return sortedCheckins[0].userId
 }
 
 function strongestKingdom(kingdoms) {
-  console.log(kingdoms)
-  const sortedKingdom = kingdoms.sort((first, next) => first.castle.strenth - next.castle.strenth)
-  console.log(sortedKingdom)
-  return sortedKingdom[sortedKingdom.length - 1].id
+  const sortedKingdom = kingdoms.sort((first, next) => first.castle.strenth - next.castle.strenth).reverse()
+  return sortedKingdom[0].id
 }
 
 module.exports = Establishment;

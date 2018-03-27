@@ -10,6 +10,8 @@ const db = require('./db')
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
+const deployedUrl = 'https://condescending-panini-ddd503.netlify.com'
+const devUrl = 'http://localhost:3000'
 module.exports = app
 
 /**
@@ -48,8 +50,7 @@ const createApp = () => {
 
   app.use(passport.session())
   app.use(function(req, res, next) {
-    req.header('Access-Control-Allow-Origin', 'http://localhost:3000', 'http://localhost:3000/dashboard#_=_')
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
+    res.header('Access-Control-Allow-Origin', deployedUrl)
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     res.header('Access-Control-Allow-Credentials', 'true')
     res.header('Access-Control-Allow-Methods', '*')
@@ -71,11 +72,6 @@ const createApp = () => {
     } else {
       next()
     }
-  })
-
-  // sends index.html
-  app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public/index.html'))
   })
 
   // error handling endware
