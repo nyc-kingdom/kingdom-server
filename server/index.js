@@ -10,7 +10,7 @@ const db = require('./db')
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
-const deployedUrl = 'https://condescending-panini-ddd503.netlify.com'
+const deployedUrl = 'http://kingdom.netlify.com'
 const devUrl = 'http://localhost:3000'
 module.exports = app
 
