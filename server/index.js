@@ -87,8 +87,9 @@ const createApp = () => {
 
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
-  const server = http.createServer(app)
-  sticky.listen(server,PORT)
+  const server = app.listen(PORT, ()=>{})
+  //const server = http.createServer(app)
+  //const stickyServer = sticky.listen(server, PORT)
   
   // set up our socket control center
   const io = socketio(server)

@@ -20,7 +20,7 @@ router.put('/', asyncHandler(async (req, res, next) => {
   const { id, location, name } = place
   const fsq = await axios.post(`https://api.foursquare.com/v2/checkins/add?venueId=${place.id}&v=20170801&oauth_token=${user.token}`)
   const checkinId = fsq.data.response.checkin.id
-  const establishment = await findOrCreateEstablishment(name, id, location.latitude, location.longitude)
+  const establishment = await findOrCreateEstablishment(name, id, location.lat, location.lng)
   const checkin = await createCheckin(user, establishment.id, checkinId)
   res.json(checkin)
 }))
