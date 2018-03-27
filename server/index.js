@@ -11,7 +11,7 @@ const cors = require('cors')
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
-const deployedUrl = 'http://kingdom.netlify.com'
+const deployedUrl = 'https://kingdom.netlify.com'
 const devUrl = 'http://localhost:3000'
 module.exports = app
 
