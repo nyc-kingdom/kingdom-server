@@ -4,7 +4,7 @@ module.exports = (io) => {
 
     socket.on('new-checkIn', newCheckIn=>{
       console.log('Somebody in the world checkin in')
-      socket.emit('new-checkIn', newCheckIn)
+      socket.broadcast.emit('new-checkIn', newCheckIn)
     })
 
     socket.on('disconnect', () => {
