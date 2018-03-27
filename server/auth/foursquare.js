@@ -2,7 +2,7 @@ const passport = require('passport')
 const router = require('express').Router()
 const FoursquareStrategy = require('passport-foursquare').Strategy;
 const { User } = require('../db/models')
-const deployedUrl = 'http://kingdom.netlify.com/'
+const deployedUrl = 'http://kingdom.netlify.com'
 const devUrl = 'http://localhost:3000'
 module.exports = router
 
