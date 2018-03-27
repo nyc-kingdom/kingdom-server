@@ -58,10 +58,12 @@ async function findOrCreateEstablishment(name, fourSquareId, latitude, longitude
 }
 
 async function createCheckin(user, establishmentId, fourSquareId) {
-  const checkin = await Checkin.scope('populated').create({ userId: user.id, establishmentId, fourSquareId })
+  const checkin = await Checkin.create({ userId: user.id, establishmentId, fourSquareId }, {include:[{all: true}]})
+  console.log('New Checkin', checkin)
   await updateKeeper(establishmentId)
   await updateCastle(user.kingdomId, establishmentId)
-  return checkin
+  const populatedCheckIn = Checkin.scope('populated').findOne({where: {id: checkin.id}})
+  return populatedCheckIn
 }
 
 async function updateKeeper(establishmentId) {

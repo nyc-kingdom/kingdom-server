@@ -16,7 +16,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
     })
   }
   if (!req.query.user && !req.query.establishment) {
-   checkins = await Checkin.findAll()
+   checkins = await Checkin.scope('populated').findAll({ order: [ ['updatedAt', 'ASC'] ] })
   }
   res.send(checkins)
 }))
