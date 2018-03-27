@@ -18,6 +18,8 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
     callbackURL: process.env.FOURSQUARE_CALLBACK
   }
 
+  if (process.env.NODE_ENV !== 'production') foursquareConfig.callbackURL = process.env.FOURSQUARE_CALLBACK_DEV
+
   const strategy = new FoursquareStrategy(foursquareConfig, (token, refreshToken, profile, done) => {
     const foursquareId = profile.id
     const name = profile.displayName
@@ -36,9 +38,15 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
 
   router.get('/', passport.authenticate('foursquare', { scope: 'email' }))
 
-  router.get('/callback', passport.authenticate('foursquare', {
-    successRedirect: `${deployedUrl}/dashboard`,
-    failureRedirect: `${deployedUrl}/`
-  })
-  )
+  if (process.env.NODE_ENV !== 'production') {
+    router.get('/callback', passport.authenticate('foursquare', {
+      successRedirect: `${devUrl}/dashboard`,
+      failureRedirect: `${devUrl}/`
+    }))
+  } else {
+    router.get('/callback', passport.authenticate('foursquare', {
+      successRedirect: `${deployedUrl}/dashboard`,
+      failureRedirect: `${deployedUrl}/`
+    }))
+  }
 }
