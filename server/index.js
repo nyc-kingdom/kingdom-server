@@ -50,8 +50,9 @@ const createApp = () => {
 
   app.use(passport.session())
   app.use(function(req, res, next) {
-    if (process.env.NODE_ENV !== 'production') res.header('Access-Control-Allow-Origin', devUrl)
-    if (process.env.NODE_ENV === 'production') res.header('Access-Control-Allow-Origin', deployedUrl)
+    // if (process.env.NODE_ENV !== 'production') res.header('Access-Control-Allow-Origin', devUrl)
+    // if (process.env.NODE_ENV === 'production') res.header('Access-Control-Allow-Origin', deployedUrl)
+    res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     res.header('Access-Control-Allow-Credentials', 'true')
     res.header('Access-Control-Allow-Methods', '*')
