@@ -3,16 +3,13 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const compression = require('compression')
-const sticky = require('sticky-session')
-const http = require('http');
-//const session = require('express-session')
 const passport = require('passport')
-//const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const db = require('./db')
+const cors = require('cors')
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
-const deployedUrl = 'nyc-kingdom.com'
+const deployedUrl = 'https://kingdom.netlify.com'
 const devUrl = 'http://localhost:3000'
 module.exports = app
 
@@ -31,7 +28,6 @@ if (process.env.NODE_ENV !== 'production') require('../secrets')
 
 
 const createApp = () => {
-  // logging middleware
   app.use(morgan('dev'))
 
   app.use(require('cookie-session')({
@@ -52,6 +48,16 @@ const createApp = () => {
   app.use(passport.initialize())
 
   app.use(passport.session())
+
+  const whitelist = [devUrl, deployedUrl]
+  const corsOptions = {
+    origin: whitelist,
+    allowedHeaders: 'X-Requested-With, Content-Type, Accept',
+    methods: '*',
+    credentials: true
+  }
+  app.use(cors(corsOptions))
+
   app.use(function(req, res, next) {
     if (process.env.NODE_ENV !== 'production') res.header('Access-Control-Allow-Origin', devUrl)
     if (process.env.NODE_ENV === 'production') res.header('Access-Control-Allow-Origin', deployedUrl)
@@ -64,8 +70,6 @@ const createApp = () => {
   // auth and api routes
   app.use('/auth', require('./auth'))
   app.use('/api', require('./api'))
-
-
 
   // any remaining requests with an extension (.js, .css, etc.) send 404
   app.use((req, res, next) => {
@@ -88,10 +92,9 @@ const createApp = () => {
 
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
-  const server = app.listen(PORT, ()=>{})
+  const server = app.listen(PORT, () => {})
   //const server = http.createServer(app)
   //const stickyServer = sticky.listen(server, PORT)
-  
   // set up our socket control center
   const io = socketio(server)
   require('./socket')(io)

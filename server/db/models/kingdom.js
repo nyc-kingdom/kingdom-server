@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const Establishment = require('./establishment')
 
 const Kingdom = db.define('kingdom', {
   name: {
@@ -23,6 +22,11 @@ const Kingdom = db.define('kingdom', {
         }, 0)
         : 0
       },
+      king() {
+        return this.users ?
+        this.users.sort((first, second) => first.experience - second.experience).reverse()[0].id
+        : null
+      }
     }
   })
 
