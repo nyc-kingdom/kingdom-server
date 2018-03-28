@@ -10,7 +10,6 @@ passport.deserializeUser((id, done) =>
     .catch(done))
 
 router.post('/logout', (req, res) => {
-  console.log("I am auth router", req.session)
   req.logout()
   res.sendStatus(200)
 })

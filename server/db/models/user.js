@@ -23,6 +23,10 @@ const User = db.define('user', {
   experience: {
     type: Sequelize.INTEGER,
     defaultValue: 0
+  },
+  isBot: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 }, {
   scopes: {
@@ -48,9 +52,3 @@ User.beforeUpdate(user => {
   user.increment('experience')
 })
 
-// User.afterCreate(user => {
-//   console.log(user.establishments)
-//   if (user.establishments && user.establishments.length) {
-//     user.experience = calcExperience(user.establishments)
-//   }
-// })

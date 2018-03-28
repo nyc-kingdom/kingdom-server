@@ -1,55 +1,23 @@
 const db = require('../server/db')
-const { User,
-  Kingdom,
-  Establishment,
-  Resource,
-  Checkin,
-  Castle } = require('../server/db/models')
+const { User, Kingdom } = require('../server/db/models')
 
 async function seed() {
   await db.sync({ force: true })
   console.log('db synced!')
 
   await Promise.all([
-    Kingdom.create({ name: 'Lefferts Gardens' }),
-    Kingdom.create({ name: 'Financial District' }),
-    Kingdom.create({ name: 'Bushwick' }),
-    Kingdom.create({ name: 'Astoria' })
-  ])
-
-  const users = await Promise.all([
-    User.scope('populated').create({ username: 'dongwoo', email: 'dongwoo@email.com', kingdomId: 2 }),
-    User.scope('populated').create({ username: 'connor', email: 'connor@gmail.com', kingdomId: 3 }),
-    User.scope('populated').create({ username: 'bruce', email: 'bruce@gmail.com', kingdomId: 4 }),
-    User.scope('populated').create({ username: 'phil', email: 'phil@email.com', kingdomId: 1 }),
+    Kingdom.create({ name: 'Arlen' }),
+    Kingdom.create({ name: 'Dragonstone' }),
+    Kingdom.create({ name: 'Meeren' }),
+    Kingdom.create({ name: 'Qarth' })
   ])
 
   await Promise.all([
-    Establishment.create({ name: 'Analogue', latitude: 40.669605, longitude: -73.995514, fourSquareId: '1', kingdom: 'Lefferts Gardens' }),
-    Establishment.create({ name: 'Starbucks', latitude: 40.673823, longitude: -73.999095, fourSquareId: '2', kingdom: 'Lefferts Gardens' }),
-    Establishment.create({ name: 'Killarneys', latitude: 40.673938, longitude: -74.109050, fourSquareId: '3', kingdom: 'Financial District'  }),
-    Establishment.create({ name: 'Fullstack', latitude: 40.705076, longitude: -74.009160, fourSquareId: '4', kingdom: 'Financial District'}),
-    Establishment.create({ name: 'Little Mo', latitude: 40.696494, longitude: -73.929491, fourSquareId: '5', kingdom: 'Bushwick' }),
-    Establishment.create({ name: 'Baby Skips', latitude: 40.702962, longitude: -73.930221, fourSquareId: '6', kingdom: 'Bushwick'  }),
-    Establishment.create({ name: 'Astoria Beer Garden', latitude: 40.769801, longitude: -73.922956, fourSquareId: '7', kingdom: 'Astoria' }),
-    Establishment.create({ name: 'PS1', latitude: 40.745595, longitude: -73.947095, fourSquareId: '8', kingdom: 'Astoria' })
+    User.scope('populated').create({ username: 'RustyShackleford', email: 'bot1@email.com', kingdomId: 1, token: 'S01DZLIWJ0DWGGMHOMXO0VDK4OLKWDXSDT4XYI3SEWT0NFKJ', isBot: true }),
+    User.scope('populated').create({ username: 'Rhaegal', email: 'bot2@email.com', kingdomId: 2, token: 'S01DZLIWJ0DWGGMHOMXO0VDK4OLKWDXSDT4XYI3SEWT0NFKJ', isBot: true}),
+    User.scope('populated').create({ username: 'Drogon', email: 'bot3@email.com', kingdomId: 3, token: 'S01DZLIWJ0DWGGMHOMXO0VDK4OLKWDXSDT4XYI3SEWT0NFKJ', isBot: true }),
+    User.scope('populated').create({ username: 'Viserion', email: 'bot4@email.com', kingdomId: 4, token: 'S01DZLIWJ0DWGGMHOMXO0VDK4OLKWDXSDT4XYI3SEWT0NFKJ', isBot: true }),
   ])
-
-  await Promise.all([
-    Checkin.create({ userId: 1, establishmentId: 3, fourSquareId: '1' }),
-    Checkin.create({ userId: 1, establishmentId: 4, fourSquareId: '4' }),
-    Checkin.create({ userId: 2, establishmentId: 5, fourSquareId: '7' }),
-    Checkin.create({ userId: 2, establishmentId: 6}),
-    Checkin.create({ userId: 2, establishmentId: 4}),
-    Checkin.create({ userId: 3, establishmentId: 7}),
-    Checkin.create({ userId: 3, establishmentId: 8}),
-    Checkin.create({ userId: 4, establishmentId: 1}),
-    Checkin.create({userId: 4, establishmentId: 2}),
-    
-  ])
-
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded successfully`)
 }
 
 // Execute the `seed` function
@@ -67,9 +35,4 @@ seed()
     console.log('db connection closed')
   })
 
-/*
- * note: everything outside of the async function is totally synchronous
- * The console.log below will occur before any of the logs that occur inside
- * of the async function
- */
 console.log('seeding...')
