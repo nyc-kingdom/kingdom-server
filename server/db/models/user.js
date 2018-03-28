@@ -48,9 +48,3 @@ User.beforeUpdate(user => {
   user.increment('experience')
 })
 
-// User.afterCreate(user => {
-//   console.log(user.establishments)
-//   if (user.establishments && user.establishments.length) {
-//     user.experience = calcExperience(user.establishments)
-//   }
-// })
