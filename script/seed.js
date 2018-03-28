@@ -10,45 +10,44 @@ async function seed() {
   await db.sync({ force: true })
   console.log('db synced!')
 
-  await Promise.all([
-    Kingdom.create({ name: 'Lefferts Gardens' }),
-    Kingdom.create({ name: 'Financial District' }),
-    Kingdom.create({ name: 'Bushwick' }),
-    Kingdom.create({ name: 'Astoria' })
-  ])
+  // await Promise.all([
+  //   Kingdom.create({ name: 'Lefferts Gardens' }),
+  //   Kingdom.create({ name: 'Financial District' }),
+  //   Kingdom.create({ name: 'Bushwick' }),
+  //   Kingdom.create({ name: 'Astoria' })
+  // ])
 
-  const users = await Promise.all([
-    User.scope('populated').create({ username: 'dongwoo', email: 'dongwoo@email.com', kingdomId: 2 }),
-    User.scope('populated').create({ username: 'connor', email: 'connor@gmail.com', kingdomId: 3 }),
-    User.scope('populated').create({ username: 'bruce', email: 'bruce@gmail.com', kingdomId: 4 }),
-    User.scope('populated').create({ username: 'phil', email: 'phil@email.com', kingdomId: 1 }),
-  ])
+  // const users = await Promise.all([
+  //   User.scope('populated').create({ username: 'dongwoo', email: 'dongwoo@email.com', kingdomId: 2 }),
+  //   User.scope('populated').create({ username: 'connor', email: 'connor@gmail.com', kingdomId: 3 }),
+  //   User.scope('populated').create({ username: 'bruce', email: 'bruce@gmail.com', kingdomId: 4 }),
+  //   User.scope('populated').create({ username: 'phil', email: 'phil@email.com', kingdomId: 1 }),
+  // ])
 
-  await Promise.all([
-    Establishment.create({ name: 'Analogue', latitude: 40.669605, longitude: -73.995514, fourSquareId: '1', kingdom: 'Lefferts Gardens' }),
-    Establishment.create({ name: 'Starbucks', latitude: 40.673823, longitude: -73.999095, fourSquareId: '2', kingdom: 'Lefferts Gardens' }),
-    Establishment.create({ name: 'Killarneys', latitude: 40.673938, longitude: -74.109050, fourSquareId: '3', kingdom: 'Financial District'  }),
-    Establishment.create({ name: 'Fullstack', latitude: 40.705076, longitude: -74.009160, fourSquareId: '4', kingdom: 'Financial District'}),
-    Establishment.create({ name: 'Little Mo', latitude: 40.696494, longitude: -73.929491, fourSquareId: '5', kingdom: 'Bushwick' }),
-    Establishment.create({ name: 'Baby Skips', latitude: 40.702962, longitude: -73.930221, fourSquareId: '6', kingdom: 'Bushwick'  }),
-    Establishment.create({ name: 'Astoria Beer Garden', latitude: 40.769801, longitude: -73.922956, fourSquareId: '7', kingdom: 'Astoria' }),
-    Establishment.create({ name: 'PS1', latitude: 40.745595, longitude: -73.947095, fourSquareId: '8', kingdom: 'Astoria' })
-  ])
+  // await Promise.all([
+  //   Establishment.create({ name: 'Analogue', latitude: 40.669605, longitude: -73.995514, fourSquareId: '1', kingdom: 'Lefferts Gardens' }),
+  //   Establishment.create({ name: 'Starbucks', latitude: 40.673823, longitude: -73.999095, fourSquareId: '2', kingdom: 'Lefferts Gardens' }),
+  //   Establishment.create({ name: 'Killarneys', latitude: 40.673938, longitude: -74.109050, fourSquareId: '3', kingdom: 'Financial District'  }),
+  //   Establishment.create({ name: 'Fullstack', latitude: 40.705076, longitude: -74.009160, fourSquareId: '4', kingdom: 'Financial District'}),
+  //   Establishment.create({ name: 'Little Mo', latitude: 40.696494, longitude: -73.929491, fourSquareId: '5', kingdom: 'Bushwick' }),
+  //   Establishment.create({ name: 'Baby Skips', latitude: 40.702962, longitude: -73.930221, fourSquareId: '6', kingdom: 'Bushwick'  }),
+  //   Establishment.create({ name: 'Astoria Beer Garden', latitude: 40.769801, longitude: -73.922956, fourSquareId: '7', kingdom: 'Astoria' }),
+  //   Establishment.create({ name: 'PS1', latitude: 40.745595, longitude: -73.947095, fourSquareId: '8', kingdom: 'Astoria' })
+  // ])
 
-  await Promise.all([
-    Checkin.create({ userId: 1, establishmentId: 3, fourSquareId: '1' }),
-    Checkin.create({ userId: 1, establishmentId: 4, fourSquareId: '4' }),
-    Checkin.create({ userId: 2, establishmentId: 5, fourSquareId: '7' }),
-    Checkin.create({ userId: 2, establishmentId: 6}),
-    Checkin.create({ userId: 2, establishmentId: 4}),
-    Checkin.create({ userId: 3, establishmentId: 7}),
-    Checkin.create({ userId: 3, establishmentId: 8}),
-    Checkin.create({ userId: 4, establishmentId: 1}),
-    Checkin.create({userId: 4, establishmentId: 2}),
+  // await Promise.all([
+  //   Checkin.create({ userId: 1, establishmentId: 3, fourSquareId: '1' }),
+  //   Checkin.create({ userId: 1, establishmentId: 4, fourSquareId: '4' }),
+  //   Checkin.create({ userId: 2, establishmentId: 5, fourSquareId: '7' }),
+  //   Checkin.create({ userId: 2, establishmentId: 6}),
+  //   Checkin.create({ userId: 2, establishmentId: 4}),
+  //   Checkin.create({ userId: 3, establishmentId: 7}),
+  //   Checkin.create({ userId: 3, establishmentId: 8}),
+  //   Checkin.create({ userId: 4, establishmentId: 1}),
+  //   Checkin.create({userId: 4, establishmentId: 2}),
     
-  ])
+  // ])
 
-  console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 }
 
