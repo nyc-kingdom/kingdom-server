@@ -3,6 +3,8 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const compression = require('compression')
+const sticky = require('sticky-session')
+const http = require('http');
 //const session = require('express-session')
 const passport = require('passport')
 //const SequelizeStore = require('connect-session-sequelize')(session.Store)
@@ -86,8 +88,10 @@ const createApp = () => {
 
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
-  const server = app.listen(PORT, () => console.log(`Mixing it up on port ${PORT}`))
-
+  const server = app.listen(PORT, ()=>{})
+  //const server = http.createServer(app)
+  //const stickyServer = sticky.listen(server, PORT)
+  
   // set up our socket control center
   const io = socketio(server)
   require('./socket')(io)
