@@ -41,6 +41,11 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
      },
     { where: { id: userId } }
   );
-  const updated = await User.scope('populated').findById(userId)
-  res.json(updated);
+  try {
+    const updated = await User.scope('populated').findById(userId)
+    res.json(updated); 
+    console.log("updated", updated) 
+  } catch (error) {
+    next(error)
+  }
 }))

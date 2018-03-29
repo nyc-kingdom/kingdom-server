@@ -23,6 +23,10 @@ const User = db.define('user', {
   experience: {
     type: Sequelize.INTEGER,
     defaultValue: 0
+  },
+  isBot: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 }, {
   scopes: {

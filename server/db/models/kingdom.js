@@ -22,6 +22,11 @@ const Kingdom = db.define('kingdom', {
         }, 0)
         : 0
       },
+      king() {
+        return this.users ?
+        this.users.sort((first, second) => first.experience - second.experience).reverse()[0].id
+        : null
+      }
     }
   })
 

@@ -4,9 +4,12 @@ const asyncHandler = require('express-async-handler')
 module.exports = router
 const axios = require('axios')
 const flickr = process.env.FLICKR_API_KEY
+const FOURSQUARESECRET = process.env.FOURSQUARE_CLIENT_SECRET
+const FOURSQUAREID = process.env.FOURSQUARE_ID
 
 router.get('/', asyncHandler(async (req, res, next) => {
   const establishments = await Establishment.scope('populated').findAll()
+  console.log(establishments)
   res.json(establishments)
 }))
 
@@ -32,6 +35,11 @@ router.put('/foursquare', asyncHandler(async (req, res, next) => {
   const inDb = await Checkin.findAll({where: {userId: user.id}})
   const filteredCheckins = checkinsArr.filter(checkin => !inDb.find(elem => elem.fourSquareId === checkin.id))
   const establishmentArr = filteredCheckins.map(checkin => checkin.venue)
+    .reduce((array, venue) => {
+      if (!array.length) array.push(venue)
+      else if (!array.find(elem => elem.fourSquareId === venue.id)) array.push(venue)
+      return array
+    }, [])
   await Promise.all(establishmentArr.map(async(place) => {
     const { id, name, location } = place
     const establishments = await findOrCreateEstablishment(name, id, location.lat, location.lng)
@@ -42,6 +50,14 @@ router.put('/foursquare', asyncHandler(async (req, res, next) => {
     return createCheckin(user, establishment.id, checkin.id)
   }))
   res.send(checkins)
+}))
+
+router.put('/bots', asyncHandler(async(req, res, next) => {
+  const { userInput, token, near } = req.query
+  const response = await axios.get(`https://api.foursquare.com/v2/venues/explore?client_id=${FOURSQUAREID}&client_secret=${FOURSQUARESECRET}&near=${near}&query=${userInput}&sortByDistance=1&oauth_token=${token}&v=20170801&limit=10`)
+  const payLoad = response.data
+  const  user = req.body.user
+  const { id, location, name } = place
 }))
 
 async function findOrCreateEstablishment(name, fourSquareId, latitude, longitude ) {
