@@ -7,6 +7,10 @@ module.exports = (io) => {
       socket.broadcast.emit('new-checkIn', newCheckIn)
     })
 
+    socket.on('paint-new-establishment', establishment => {
+      socket.broadcast.emit('paint-new-establishment', establishment)
+    })
+
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
     })
