@@ -43,7 +43,7 @@ function mostCheckins(checkins) {
 }
 
 function strongestKingdom(kingdoms) {
-  const sortedKingdom = kingdoms.sort((first, next) => first.castle.strenth - next.castle.strenth).reverse()
+  const sortedKingdom = kingdoms.sort((first, next) => first.castle.strength - next.castle.strength).reverse()
   return sortedKingdom[0].name
 }
 
