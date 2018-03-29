@@ -6,6 +6,9 @@ const deployedUrl = 'https://kingdom.netlify.com'
 const devUrl = 'http://localhost:3000'
 module.exports = router
 
+console.log("which enviroment", process.env)
+
+
 if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
 
   console.log('foursquare client ID / secret not found. Skipping foursquare OAuth.')

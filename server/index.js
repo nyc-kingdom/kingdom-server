@@ -13,6 +13,7 @@ const deployedUrl = 'https://kingdom.netlify.com'
 const devUrl = 'http://localhost:3000'
 module.exports = app
 
+
 /**
  * In your development environment, you can keep all of your
  * app's secret API keys in a file called `secrets.js`, in your project
