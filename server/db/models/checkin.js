@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 const User = require('./user')
+
 const Checkin = db.define('checkin', {
   quantity: {
     type: Sequelize.INTEGER,

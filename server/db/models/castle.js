@@ -19,7 +19,3 @@ module.exports = Castle;
 Castle.prototype.addStrength = function () {
   this.increment('strength')
 }
-
-Castle.prototype.decreaseStrength = function (sub) {
-  this.strength -= sub
-}

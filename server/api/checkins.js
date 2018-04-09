@@ -34,20 +34,12 @@ router.delete('/:userId/:kingdomId', asyncHandler(async (req, res, next) => {
     }
     return accu
   }, {})
-  console.log("condenseCheckins", condenseCheckins)
-
   const castleForEdit = await Promise.all(Object.keys(condenseCheckins).map(async establishmentId => {
     const [matchCastle] = await Castle.findAll({ where: { establishmentId: +establishmentId, kingdomId } })
-    console.log('establishmentId', establishmentId, 'kingdomId', kingdomId, 'matchCastle: ', matchCastle)
-
     return matchCastle
   }))
-  console.log('castleForEdit: ', castleForEdit)
-
   const editedCastle = await Promise.all(castleForEdit.map(async castle => {
     const updateStrength = castle.strength - condenseCheckins[castle.establishmentId].strength
-    console.log('updateStrength: ', updateStrength)
-
     if (updateStrength > 0) {
       return await Castle.update(
         { strength: updateStrength },
@@ -59,8 +51,6 @@ router.delete('/:userId/:kingdomId', asyncHandler(async (req, res, next) => {
       )
     }
   }))
-  console.log('updated?')
-
   await Checkin.destroy({ where: { userId } })
   res.sendStatus(204)
 }))
