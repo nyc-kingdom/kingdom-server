@@ -51,4 +51,3 @@ User.beforeUpdate(user => {
   }
   user.increment('experience')
 })
-
