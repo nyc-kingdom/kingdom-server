@@ -12,7 +12,7 @@ const Kingdom = db.define('kingdom', {
       }
     },
     getterMethods: {
-      domainSize() {
+      domainSize () {
         return this.establishments ? this.establishments.length : 0
       },
       power () {
@@ -22,9 +22,9 @@ const Kingdom = db.define('kingdom', {
         }, 0)
         : 0
       },
-      king() {
-        return this.users ?
-        this.users.sort((first, second) => first.experience - second.experience).reverse()[0].id
+      king () {
+        return !this.users ? null : this.users[0] ?
+        this.users.sort((first, second) => second.experience - first.experience)[0].id
         : null
       }
     }
