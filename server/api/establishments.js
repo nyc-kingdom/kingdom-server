@@ -9,7 +9,6 @@ const FOURSQUAREID = process.env.FOURSQUARE_ID
 
 router.get('/', asyncHandler(async (req, res, next) => {
   const establishments = await Establishment.scope('populated').findAll()
-  console.log(establishments)
   res.json(establishments)
 }))
 

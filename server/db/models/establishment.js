@@ -38,12 +38,12 @@ const Establishment = db.define('establishment', {
   })
 
 function mostCheckins(checkins) {
-  const sortedCheckins = checkins.sort((first, next) => first.quantity - next.quantity).reverse()
+  const sortedCheckins = checkins.sort((first, next) => next.quantity - first.quantity)
   return sortedCheckins[0].userId
 }
 
 function strongestKingdom(kingdoms) {
-  const sortedKingdom = kingdoms.sort((first, next) => first.castle.strength - next.castle.strength).reverse()
+  const sortedKingdom = kingdoms.sort((first, next) => next.castle.strength - first.castle.strength)
   return sortedKingdom[0].name
 }
 
