@@ -5,6 +5,7 @@ const Kingdom = require('./kingdom')
 const Resource = require('./resource')
 const UserResource = require('./userResource')
 const Castle = require('./castle')
+const Shield = require('./shield')
 
 // //Many to Many
 // User.belongsToMany(Establishment, {through: Checkin})
@@ -26,10 +27,14 @@ User.hasMany(Checkin)
 Checkin.belongsTo(Establishment)
 Establishment.hasMany(Checkin)
 
+//One to One
+Shield.belongsTo(Kingdom)
+
 module.exports = {
   User,
   Establishment,
   Checkin,
   Kingdom,
-  Castle
+  Castle,
+  Shield
 }
