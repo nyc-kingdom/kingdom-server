@@ -3,7 +3,10 @@ const User = require('../db/models/user')
 const passport = require('passport')
 module.exports = router
 
+console.log("which enviroment", process.env)
+
 passport.serializeUser((user, done) => done(null, user.id))
+
 passport.deserializeUser((id, done) =>
   User.findById(id)
     .then(user => done(null, user))
@@ -11,6 +14,7 @@ passport.deserializeUser((id, done) =>
 
 router.post('/logout', (req, res) => {
   req.logout()
+  console.log("What is req.session: ", req.session)
   res.sendStatus(200)
 })
 
