@@ -19,9 +19,9 @@ router.post('/', asyncHandler(async (req, res, next) => {
     res.status(201).json(newShield)
 }))
 
-router.put('/:shieldId/:kingdomId', asyncHandler(async (req, res, next) => {
+router.put('/:shieldId/', asyncHandler(async (req, res, next) => {
     const id = req.params.shieldId
-    const kingdomId = req.params.kingdomId
+    const kingdomId = req.body.kingdomId
     const resignShield = await Shield.update({ kingdomId: null }, { where: { kingdomId } })
     const [isUpdate, [assignShield]] = await Shield.update({ kingdomId }, { where: { id }, returning: true })
     console.log("isUpdate: ", isUpdate, "assignShield: ", assignShield)
