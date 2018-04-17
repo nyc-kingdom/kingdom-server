@@ -5,10 +5,10 @@ const { User } = require('../db/models')
 module.exports = router
 
 let serverUrl;
-if (process.env.NODE_ENV === 'production') {
-    serverUrl = 'https://kingdom.netlify.com'
+if (process.env.NODE_ENV !== 'production') {
+  serverUrl = 'http://localhost:3000'
 } else {
-    serverUrl = 'http://localhost:3000'
+  serverUrl = 'https://kingdom.netlify.com'
 }
 console.log("which enviroment", process.env.NODE_ENV, serverUrl)
 
