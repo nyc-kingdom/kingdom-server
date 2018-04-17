@@ -26,7 +26,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.put('/:id', asyncHandler(async (req, res, next) => {
   const userId = +req.params.id;
-  const { address, username, experience } = req.body
+  const { address, username } = req.body
   const googleCoords = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${googleMap}`)
   const { lat, lng } = googleCoords.data.results[0].geometry.location
   const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${lat}&lon=${lng}&format=json&nojsoncallback=1`)
@@ -38,7 +38,7 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
     {
       kingdomId: kingdom[0].dataValues.id,
       username: username,
-      experience
+      experience: 0
     },
     { where: { id: userId } }
   );
