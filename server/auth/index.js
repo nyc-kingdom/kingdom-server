@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const User = require('../db/models/user')
+const { User } = require('../db/models')
 const passport = require('passport')
 module.exports = router
 
@@ -14,7 +14,7 @@ passport.deserializeUser((id, done) =>
 
 router.post('/logout', (req, res) => {
   req.logout()
-  console.log("What is req.session: ", req.session)
+  req.session = null
   res.sendStatus(200)
 })
 
