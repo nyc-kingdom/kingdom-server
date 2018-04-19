@@ -2,11 +2,8 @@ const passport = require('passport')
 const router = require('express').Router()
 const FoursquareStrategy = require('passport-foursquare').Strategy;
 const { User } = require('../db/models')
-const deployedUrl = 'https://kingdom.netlify.com'
-const devUrl = 'http://localhost:3000'
+const { clientUrl } = require('../')
 module.exports = router
-
-console.log("which enviroment", process.env.NODE_ENV)
 
 
 if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
@@ -41,15 +38,8 @@ if (!process.env.FOURSQUARE_ID || !process.env.FOURSQUARE_CLIENT_SECRET) {
 
   router.get('/', passport.authenticate('foursquare', { scope: 'email' }))
 
-  if (process.env.NODE_ENV !== 'production') {
-    router.get('/callback', passport.authenticate('foursquare', {
-      successRedirect: `${devUrl}/dashboard`,
-      failureRedirect: `${devUrl}/`
-    }))
-  } else {
-    router.get('/callback', passport.authenticate('foursquare', {
-      successRedirect: `${deployedUrl}/dashboard`,
-      failureRedirect: `${deployedUrl}/`
-    }))
-  }
+  router.get('/callback', passport.authenticate('foursquare', {
+    successRedirect: `${clientUrl}/dashboard`,
+    failureRedirect: `${clientUrl}/`
+  }))
 }
