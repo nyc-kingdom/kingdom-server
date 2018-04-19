@@ -3,8 +3,6 @@ const { User } = require('../db/models')
 const passport = require('passport')
 module.exports = router
 
-console.log("which enviroment", process.env)
-
 passport.serializeUser((user, done) => done(null, user.id))
 
 passport.deserializeUser((id, done) =>
