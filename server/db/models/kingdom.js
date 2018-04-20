@@ -17,9 +17,7 @@ const Kingdom = db.define('kingdom', {
       },
       localDomain () {
         return this.establishments ? this.establishments
-          .filter(establishment =>
-            establishment.kingdom === establishment.allegiance && establishment.allegiance === this.name
-          )
+          .filter(establishment => establishment.kingdom === this.name)
           .length
           : 0
       },
