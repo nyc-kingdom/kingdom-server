@@ -7,7 +7,8 @@ const Establishment = db.define('establishment', {
     allowNull: false
   },
   fourSquareId: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    unique: true
   },
   latitude: {
     type: Sequelize.DECIMAL
