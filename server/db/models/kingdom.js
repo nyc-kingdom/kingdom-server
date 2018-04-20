@@ -15,6 +15,17 @@ const Kingdom = db.define('kingdom', {
       domainSize () {
         return this.establishments ? this.establishments.length : 0
       },
+      localDomain () {
+        return this.establishments ? this.establishments
+          .filter(establishment =>
+            establishment.kingdom === establishment.allegiance && establishment.allegiance === this.name
+          )
+          .length
+          : 0
+      },
+      colonies () {
+        return this.domainSize - this.localDomain
+      },
       power () {
         return this.users ? this.users.reduce((power, user) => {
           power += user.experience
@@ -27,7 +38,7 @@ const Kingdom = db.define('kingdom', {
         this.users.sort((first, second) => second.experience - first.experience)[0].id
         : null
       }
-    }
+    },
   })
 
 module.exports = Kingdom;
