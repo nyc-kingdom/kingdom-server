@@ -11,8 +11,10 @@ passport.deserializeUser((id, done) =>
     .catch(done))
 
 router.post('/logout', (req, res) => {
-  req.logout()
+  console.log("what is req.header: ", req.headers.cookie, req.user, Object.keys(req))
+  // req.logout()
   req.session = null
+
   res.sendStatus(200)
 })
 
