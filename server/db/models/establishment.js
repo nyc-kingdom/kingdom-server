@@ -34,9 +34,18 @@ const Establishment = db.define('establishment', {
       },
       popularity() {
         return this.checkins ? this.checkins.length : 0
+      },
+      visitors () {
+        return this.checkins && this.checkins.length ? totalVisitors(this.checkins) : 0
       }
     }
   })
+
+function totalVisitors(checkins) {
+  return checkins
+    .reduce((accu, curr) => accu.includes(curr.userId) ? accu : accu.concat(curr.userId), [])
+    .length
+}
 
 function mostCheckins(checkins) {
   const sortedCheckins = checkins.sort((first, next) => next.quantity - first.quantity)
