@@ -34,9 +34,24 @@ const User = db.define('user', {
       include: [{ all: true}]
     }
   },
+  getterMethods: {
+    discover () {
+      return this.checkins && this.checkins.length ? foundEst(this.checkins) : 0
+    }
+  }
 })
 
 module.exports = User
+
+function foundEst(checkins) {
+  return checkins.reduce((accu, curr) =>
+    accu.includes(curr.establishmentId)
+        ? accu
+        : accu.concat(curr.establishmentId),
+        []
+      )
+      .length
+}
 
 function calcExperience(establishments) {
   return establishments.reduce((experience, establishment) => {
