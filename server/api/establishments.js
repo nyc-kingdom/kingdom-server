@@ -9,7 +9,6 @@ const FOURSQUAREID = process.env.FOURSQUARE_ID
 
 router.get('/', asyncHandler(async (req, res, next) => {
   const establishments = await Establishment.scope('populated').findAll()
-  console.log(establishments)
   res.json(establishments)
 }))
 
@@ -57,7 +56,7 @@ router.put('/bots', asyncHandler(async(req, res, next) => {
   const { userInput, token, near } = req.query
   const response = await axios.get(`https://api.foursquare.com/v2/venues/explore?client_id=${FOURSQUAREID}&client_secret=${FOURSQUARESECRET}&near=${near}&query=${userInput}&sortByDistance=1&oauth_token=${token}&v=20170801&limit=10`)
   const payLoad = response.data
-  const  user = req.body.user
+  const user = req.body.user
   const { id, location, name } = place
 }))
 

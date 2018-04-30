@@ -37,8 +37,9 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
   await User.update(
     {
       kingdomId: kingdom[0].dataValues.id,
-      username: username
-     },
+      username: username,
+      experience: 0
+    },
     { where: { id: userId } }
   );
   try {

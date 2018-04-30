@@ -9,10 +9,16 @@ const cors = require('cors')
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
-const deployedUrl = 'https://kingdom.netlify.com'
-const devUrl = 'http://localhost:3000'
 module.exports = app
 
+let clientUrl;
+if (process.env.NODE_ENV === "production") {
+    clientUrl = 'https://kingdom.netlify.com'
+} else {
+    const port = 3000
+    clientUrl = `http://localhost:${port}`
+}
+module.exports = { clientUrl }
 
 /**
  * In your development environment, you can keep all of your
@@ -26,15 +32,14 @@ if (process.env.NODE_ENV !== 'production') require('../secrets')
 
 // passport registration
 
-
 const createApp = () => {
   app.use(morgan('dev'))
 
   app.use(require('cookie-session')({
     name: 'session',
     keys: [process.env.SESSION_SECRET || 'an insecure secret key'],
-    secure: false,
-    httpO: false
+    secure: false, //a boolean indicating whether the cookie is only to be sent over HTTPS (false by default for HTTP, true by default for HTTPS)
+    httpOnly: false, //a boolean indicating whether the cookie is only to be sent over HTTP(S), and not made available to client JavaScript (true by default).
   }))
 
   // body parsing middleware
@@ -49,18 +54,16 @@ const createApp = () => {
 
   app.use(passport.session())
 
-  const whitelist = [devUrl, deployedUrl]
   const corsOptions = {
-    origin: whitelist,
+    origin: clientUrl,
     allowedHeaders: 'X-Requested-With, Content-Type, Accept',
     methods: '*',
     credentials: true
   }
   app.use(cors(corsOptions))
 
-  app.use(function(req, res, next) {
-    if (process.env.NODE_ENV !== 'production') res.header('Access-Control-Allow-Origin', devUrl)
-    if (process.env.NODE_ENV === 'production') res.header('Access-Control-Allow-Origin', deployedUrl)
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', clientUrl)
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     res.header('Access-Control-Allow-Credentials', 'true')
     res.header('Access-Control-Allow-Methods', '*')

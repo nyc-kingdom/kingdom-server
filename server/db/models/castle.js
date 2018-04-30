@@ -6,6 +6,12 @@ const Castle = db.define('castle', {
     type: Sequelize.INTEGER,
     defaultValue: 1
   }
+}, {
+  scopes: {
+    populated: {
+      include: [{ all: true }]
+    }
+  }
 })
 
 module.exports = Castle;
