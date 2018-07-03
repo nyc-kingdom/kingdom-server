@@ -62,7 +62,8 @@ router.put('/bots', asyncHandler(async(req, res, next) => {
 
 async function findOrCreateEstablishment(name, fourSquareId, latitude, longitude ) {
   const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${latitude}&lon=${longitude}&format=json&nojsoncallback=1`)
-  const kingdom = flckr.data.places.place[0].woe_name
+  const kingdom = flckr.data.places.place[0].name.split(', ').slice(0, 2).join(', ') //Kingdom Name With State
+  // const kingdom = flckr.data.places.place[0].woe_name
   const establishment = await Establishment.scope('populated').findOrCreate({
     where: { fourSquareId },
     defaults: { name, fourSquareId, latitude, longitude, kingdom }

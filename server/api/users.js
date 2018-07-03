@@ -30,9 +30,10 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
   const googleCoords = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${googleMap}`)
   const { lat, lng } = googleCoords.data.results[0].geometry.location
   const flckr =  await axios.get(`https://api.flickr.com/services/rest/?method=flickr.places.findByLatLon&api_key=${flickr}&lat=${lat}&lon=${lng}&format=json&nojsoncallback=1`)
-  const kingdomName = flckr.data.places.place[0].woe_name
+  const kingdomNameWithState = flckr.data.places.place[0].name.split(', ').slice(0, 2).join(', ')
+  // const kingdomName = flckr.data.places.place[0].woe_name
   const kingdom = await Kingdom.scope('populated').findOrCreate({
-    where: { name: kingdomName },
+    where: { name: kingdomNameWithState },
   });
   await User.update(
     {
@@ -45,7 +46,6 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
   try {
     const updated = await User.scope('populated').findById(userId)
     res.json(updated); 
-    console.log("updated", updated) 
   } catch (error) {
     next(error)
   }
