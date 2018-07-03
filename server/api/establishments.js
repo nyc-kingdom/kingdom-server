@@ -18,6 +18,7 @@ router.get('/:id', asyncHandler(async (req, res, next) => {
 }))
 
 router.put('/', asyncHandler(async (req, res, next) => {
+  console.log(req.body, 'body of a checkin - are you working?!')
   const { place, user } = req.body
   const { id, location, name } = place
   const fsq = await axios.post(`https://api.foursquare.com/v2/checkins/add?venueId=${place.id}&v=20170801&oauth_token=${user.token}`)
